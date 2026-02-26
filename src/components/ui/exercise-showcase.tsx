@@ -93,30 +93,48 @@ const OHPPose = () => {
       <line x1="35" y1="180" x2="55" y2="180" stroke="currentColor" className="text-foreground" strokeWidth="2.5" /> {/* Feet */}
       <line x1="65" y1="180" x2="85" y2="180" stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
 
+      {/* Knee Lockout Indicators */}
+      <path d="M 73.8 130.1 A 10 10 0 0 0 75 150" stroke="currentColor" className="text-primary" strokeWidth="1.5" fill="none" strokeDasharray="2 2" />
+      <path d="M 46.2 130.1 A 10 10 0 0 1 45 150" stroke="currentColor" className="text-primary" strokeWidth="1.5" fill="none" strokeDasharray="2 2" />
+
       {/* Torso Base */}
       <line x1="50" y1="100" x2="70" y2="100" stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
-      <motion.line x1="50" y1="100" x2="40" y2="50" animate={{ y2: [50, 45, 50] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
-      <motion.line x1="70" y1="100" x2="80" y2="50" animate={{ y2: [50, 45, 50] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
-      <motion.line x1="40" y1="50" x2="80" y2="50" animate={{ y1: [50, 45, 50], y2: [50, 45, 50] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <line x1="50" y1="100" x2="40" y2="50" stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <line x1="70" y1="100" x2="80" y2="50" stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <line x1="40" y1="50" x2="80" y2="50" stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
 
       {/* Arms */}
-      <motion.line x1="40" y1="50" x2="30" y2="75" animate={{ y1: [50, 45, 50], x2: [30, 35, 30], y2: [75, 30, 75] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
-      <motion.line x1="30" y1="75" x2="35" y2="50" animate={{ x1: [30, 35, 30], y1: [75, 30, 75], x2: [40, 40, 40], y2: [10, 10, 10] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={40} y1={50} x2={22.1} y2={68.8} animate={{ x2: [22.1, 14.2, 23.5], y2: [68.8, 47.1, 30.0] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={22.1} y1={68.8} x2={25} y2={43} animate={{ x1: [22.1, 14.2, 23.5], y1: [68.8, 47.1, 30.0], y2: [43, 23.5, 4] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
 
-      <motion.line x1="80" y1="50" x2="90" y2="75" animate={{ y1: [50, 45, 50], x2: [90, 85, 90], y2: [75, 30, 75] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
-      <motion.line x1="90" y1="75" x2="85" y2="50" animate={{ x1: [90, 85, 90], y1: [75, 30, 75], x2: [80, 80, 80], y2: [10, 10, 10] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={80} y1={50} x2={97.9} y2={68.8} animate={{ x2: [97.9, 105.8, 96.5], y2: [68.8, 47.1, 30.0] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={97.9} y1={68.8} x2={95} y2={43} animate={{ x1: [97.9, 105.8, 96.5], y1: [68.8, 47.1, 30.0], y2: [43, 23.5, 4] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+
+      {/* Left Elbow Angle Indicator */}
+      <motion.path 
+        d="M 23.2 58.9 A 10 10 0 0 1 29.0 61.6" 
+        animate={{ d: ["M 23.2 58.9 A 10 10 0 0 1 29.0 61.6", "M 18.4 38.0 A 10 10 0 0 1 24.1 48.2", "M 24.1 20.0 A 10 10 0 0 1 29.8 37.7"] }} 
+        transition={t} stroke="currentColor" className="text-primary" strokeWidth="1.5" fill="none" strokeDasharray="2 2" 
+      />
+
+      {/* Right Elbow Angle Indicator */}
+      <motion.path 
+        d="M 96.8 58.9 A 10 10 0 0 0 91.0 61.6" 
+        animate={{ d: ["M 96.8 58.9 A 10 10 0 0 0 91.0 61.6", "M 101.6 38.0 A 10 10 0 0 0 95.9 48.2", "M 95.9 20.0 A 10 10 0 0 0 90.2 37.7"] }} 
+        transition={t} stroke="currentColor" className="text-primary" strokeWidth="1.5" fill="none" strokeDasharray="2 2" 
+      />
+
+      {/* Head */}
+      <circle cx="60" cy="25" r="9" stroke="currentColor" className="text-foreground fill-background" strokeWidth="2" />
 
       {/* Barbell */}
-      <motion.line x1="20" y1="50" x2="100" y2="50" animate={{ y1: [50, 10, 50], y2: [50, 10, 50] }} transition={t} stroke="currentColor" className="text-primary" strokeWidth="3.5" />
-      
-      {/* Head */}
-      <motion.circle cx="60" cy="25" r="9" animate={{ cy: [25, 20, 25] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="2" />
+      <motion.line x1={10} y1={43} x2={110} y2={43} animate={{ y1: [43, 23.5, 4], y2: [43, 23.5, 4] }} transition={t} stroke="currentColor" className="text-primary" strokeWidth="3.5" />
 
       {/* Joints */}
-      <motion.circle cx="40" cy="50" r="3" animate={{ cy: [50, 45, 50] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
-      <motion.circle cx="80" cy="50" r="3" animate={{ cy: [50, 45, 50] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
-      <motion.circle cx="30" cy="75" r="3" animate={{ cx: [30, 35, 30], cy: [75, 30, 75] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
-      <motion.circle cx="90" cy="75" r="3" animate={{ cx: [90, 85, 90], cy: [75, 30, 75] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <circle cx="40" cy="50" r="3" stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <circle cx="80" cy="50" r="3" stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <motion.circle cx={22.1} cy={68.8} r="3" animate={{ cx: [22.1, 14.2, 23.5], cy: [68.8, 47.1, 30.0] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <motion.circle cx={97.9} cy={68.8} r="3" animate={{ cx: [97.9, 105.8, 96.5], cy: [68.8, 47.1, 30.0] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
     </svg>
   );
 };
@@ -127,38 +145,46 @@ const SquatPose = () => {
   return (
     <svg viewBox="0 0 120 200" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
       {/* Ground */}
-      <line x1="20" y1="170" x2="100" y2="170" stroke="currentColor" className="text-muted-foreground opacity-30" strokeWidth="2" strokeDasharray="4 4" />
-      <line x1="70" y1="170" x2="90" y2="170" stroke="currentColor" className="text-foreground" strokeWidth="2.5" /> {/* Foot */}
+      <line x1="20" y1="180" x2="100" y2="180" stroke="currentColor" className="text-muted-foreground opacity-30" strokeWidth="2" strokeDasharray="4 4" />
+      <line x1="70" y1="180" x2="90" y2="180" stroke="currentColor" className="text-foreground" strokeWidth="2.5" /> {/* Foot */}
 
       {/* Calf */}
-      <motion.line x1="70" y1="170" x2="70" y2="120" animate={{ x2: [70, 95, 70], y2: [120, 120, 120] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={70} y1={180} x2={70} y2={130} animate={{ x2: [70, 91, 70], y2: [130, 135, 130] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
       {/* Thigh */}
-      <motion.line x1="70" y1="120" x2="70" y2="70" animate={{ x1: [70, 95, 70], y1: [120, 120, 120], x2: [70, 45, 70], y2: [70, 130, 70] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={70} y1={130} x2={70} y2={80} animate={{ x1: [70, 91, 70], y1: [130, 135, 130], x2: [70, 41, 70], y2: [80, 140, 80] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
       {/* Torso */}
-      <motion.line x1="70" y1="70" x2="70" y2="30" animate={{ x1: [70, 45, 70], y1: [70, 130, 70], x2: [70, 75, 70], y2: [30, 75, 30] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={70} y1={80} x2={70} y2={25} animate={{ x1: [70, 41, 70], y1: [80, 140, 80], x2: [70, 76, 70], y2: [25, 98, 25] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
       
       {/* Arm */}
-      <motion.line x1="70" y1="30" x2="60" y2="45" animate={{ x1: [70, 75, 70], y1: [30, 75, 30], x2: [60, 65, 60], y2: [45, 90, 45] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
-      <motion.line x1="60" y1="45" x2="70" y2="30" animate={{ x1: [60, 65, 60], y1: [45, 90, 45], x2: [70, 75, 70], y2: [30, 75, 30] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={70} y1={25} x2={60} y2={40} animate={{ x1: [70, 76, 70], y1: [25, 98, 25], x2: [60, 66, 60], y2: [40, 113, 40] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={60} y1={40} x2={70} y2={25} animate={{ x1: [60, 66, 60], y1: [40, 113, 40], x2: [70, 76, 70], y2: [25, 98, 25] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
 
       {/* Head */}
-      <motion.circle cx="70" cy="12" r="9" animate={{ cx: [70, 85, 70], cy: [12, 55, 12] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="2" />
+      <motion.circle cx={70} cy={8} r={9} animate={{ cx: [70, 86, 70], cy: [8, 87, 8] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="2" />
       
       {/* Barbell */}
-      <motion.circle cx="70" cy="30" r="5" animate={{ cx: [70, 75, 70], cy: [30, 75, 30] }} transition={t} className="fill-primary" />
+      <motion.circle cx={70} cy={25} r={5} animate={{ cx: [70, 76, 70], cy: [25, 98, 25] }} transition={t} className="fill-primary" />
 
-      {/* Angle Indicator */}
+      {/* Hip Angle Indicator */}
       <motion.path 
-        d="M 60 85 A 15 15 0 0 1 70 95" 
-        animate={{ d: ["M 65 85 A 15 15 0 0 1 75 95", "M 55 115 A 15 15 0 0 1 65 145", "M 65 85 A 15 15 0 0 1 75 95"], opacity: [0, 1, 0] }} 
+        d="M 70 62.1 A 18 18 0 0 1 70 97.9" 
+        animate={{ d: ["M 70 62.1 A 18 18 0 0 1 70 97.9", "M 52.5 126.2 A 18 18 0 0 1 58.9 138.2", "M 70 62.1 A 18 18 0 0 1 70 97.9"], opacity: [0, 1, 0] }} 
+        transition={t} stroke="currentColor" className="text-primary" strokeWidth="1.5" fill="none" strokeDasharray="2 2" 
+      />
+
+      {/* Knee Angle Indicator */}
+      <motion.path 
+        d="M 70 112.1 A 18 18 0 0 0 70 147.9" 
+        animate={{ d: ["M 70 112.1 A 18 18 0 0 0 70 147.9", "M 73.1 136.8 A 18 18 0 0 0 83.4 151.3", "M 70 112.1 A 18 18 0 0 0 70 147.9"], opacity: [0, 1, 0] }} 
         transition={t} stroke="currentColor" className="text-primary" strokeWidth="1.5" fill="none" strokeDasharray="2 2" 
       />
 
       {/* Joints */}
-      <motion.circle cx="70" cy="120" r="3" animate={{ cx: [70, 95, 70], cy: [120, 120, 120] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
-      <motion.circle cx="70" cy="70" r="3" animate={{ cx: [70, 45, 70], cy: [70, 130, 70] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
-      <motion.circle cx="70" cy="30" r="3" animate={{ cx: [70, 75, 70], cy: [30, 75, 30] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
-      <motion.circle cx="60" cy="45" r="3" animate={{ cx: [60, 65, 60], cy: [45, 90, 45] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <circle cx={70} cy={180} r={3} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <motion.circle cx={70} cy={130} r={3} animate={{ cx: [70, 91, 70], cy: [130, 135, 130] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <motion.circle cx={70} cy={80} r={3} animate={{ cx: [70, 41, 70], cy: [80, 140, 80] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <motion.circle cx={70} cy={25} r={3} animate={{ cx: [70, 76, 70], cy: [25, 98, 25] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <motion.circle cx={60} cy={40} r={3} animate={{ cx: [60, 66, 60], cy: [40, 113, 40] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
     </svg>
   );
 };
@@ -184,23 +210,23 @@ const RowPose = () => {
 
       {/* Torso Angle Indicator */}
       <path d="M 40 100 L 90 100" stroke="currentColor" className="text-muted-foreground opacity-50" strokeWidth="1.5" strokeDasharray="3 3" />
-      <path d="M 60 100 A 20 20 0 0 0 65 80" stroke="currentColor" className="text-primary" strokeWidth="1.5" fill="none" />
-      <text x="68" y="90" fontSize="7" fontFamily="system-ui" fontWeight="600" className="fill-primary">45°</text>
+      <path d="M 60 100 A 20 20 0 0 0 55.6 87.6" stroke="currentColor" className="text-primary" strokeWidth="1.5" fill="none" />
+      <text x="63" y="92" fontSize="7" fontFamily="system-ui" fontWeight="600" className="fill-primary">39°</text>
 
       {/* Arm */}
-      <motion.line x1="90" y1="60" x2="85" y2="95" animate={{ x2: [85, 65, 85], y2: [95, 55, 95] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
-      <motion.line x1="85" y1="95" x2="85" y2="130" animate={{ x1: [85, 65, 85], y1: [95, 55, 95], x2: [85, 75, 85], y2: [130, 95, 130] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={90} y1={60} x2={90} y2={95} animate={{ x2: [90, 58.7, 58.1], y2: [95, 75.5, 45.7] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
+      <motion.line x1={90} y1={95} x2={90} y2={130} animate={{ x1: [90, 58.7, 58.1], y1: [95, 75.5, 45.7], x2: [90, 77.5, 65], y2: [130, 105, 80] }} transition={t} stroke="currentColor" className="text-foreground" strokeWidth="2.5" />
 
       {/* Barbell Plates */}
-      <motion.circle cx="85" cy="130" r="14" animate={{ cx: [85, 75, 85], cy: [130, 95, 130] }} transition={t} className="fill-foreground opacity-10" />
-      <motion.circle cx="85" cy="130" r="5" animate={{ cx: [85, 75, 85], cy: [130, 95, 130] }} transition={t} className="fill-primary" />
+      <motion.circle cx={90} cy={130} r="14" animate={{ cx: [90, 77.5, 65], cy: [130, 105, 80] }} transition={t} className="fill-foreground opacity-10" />
+      <motion.circle cx={90} cy={130} r="5" animate={{ cx: [90, 77.5, 65], cy: [130, 105, 80] }} transition={t} className="fill-primary" />
 
       {/* Joints */}
       <circle cx="80" cy="140" r="3" stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
       <circle cx="40" cy="100" r="3" stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
       <circle cx="90" cy="60" r="3" stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
-      <motion.circle cx="85" cy="95" r="3" animate={{ cx: [85, 65, 85], cy: [95, 55, 95] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
-      <motion.circle cx="85" cy="130" r="3" animate={{ cx: [85, 75, 85], cy: [130, 95, 130] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <motion.circle cx={90} cy={95} r="3" animate={{ cx: [90, 58.7, 58.1], cy: [95, 75.5, 45.7] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
+      <motion.circle cx={90} cy={130} r="3" animate={{ cx: [90, 77.5, 65], cy: [130, 105, 80] }} transition={t} stroke="currentColor" className="text-foreground fill-background" strokeWidth="1.5" />
     </svg>
   );
 };
