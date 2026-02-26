@@ -15,7 +15,6 @@ interface ExerciseData {
   id: ExerciseId;
   label: string;
   title: string;
-  subtitle: string;
   reps: number;
   subjects: number;
   errors: ErrorMetric[];
@@ -24,34 +23,31 @@ interface ExerciseData {
 const EXERCISE_DATA: Record<ExerciseId, ExerciseData> = {
   ohp: {
     id: 'ohp',
-    label: 'OHP',
+    label: 'Overhead Press',
     title: 'Overhead Press',
-    subtitle: '1,639 reps · 215 subjects',
     reps: 1639,
     subjects: 215,
     errors: [
-      { label: 'Elbow Flare', value: 14.2, format: 'Temporal Interval' },
-      { label: 'Knee Lockout', value: 13.8, format: 'Temporal Interval' },
+      { label: 'Elbow Flare', value: 14.2, format: 'Temporal' },
+      { label: 'Knee Lockout', value: 13.8, format: 'Temporal' },
     ],
   },
   squat: {
     id: 'squat',
-    label: 'Squat',
+    label: 'Back Squat',
     title: 'Back Squat',
-    subtitle: '1,934 reps · 251 subjects',
     reps: 1934,
     subjects: 251,
     errors: [
-      { label: 'Knees Forward', value: 68.1, format: 'Temporal Interval' },
+      { label: 'Knees Forward', value: 68.1, format: 'Temporal' },
       { label: 'Shallow Depth', value: 31.4, format: 'Binary' },
-      { label: 'Knees Inward', value: 13.6, format: 'Temporal Interval' },
+      { label: 'Knees Inward', value: 13.6, format: 'Temporal' },
     ],
   },
   row: {
     id: 'row',
-    label: 'Row',
+    label: 'Barbell Row',
     title: 'Barbell Row',
-    subtitle: '1,406 reps · 183 subjects',
     reps: 1406,
     subjects: 183,
     errors: [
@@ -65,118 +61,157 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.05 },
   },
-  exit: { opacity: 0, transition: { duration: 0.15 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
 } as const;
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 14, filter: 'blur(6px)' },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
-    transition: { type: 'spring' as const, stiffness: 120, damping: 22 },
+    transition: { type: 'spring' as const, stiffness: 100, damping: 20 },
   },
-  exit: { opacity: 0, y: -8, filter: 'blur(4px)' },
+  exit: { opacity: 0, y: -10 },
 };
 
-const OHPPose = () => (
-  <svg viewBox="0 0 120 200" fill="none" stroke="#0A1628" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
-    <motion.circle cx="60" cy="22" r="8" fill="#F8F9FB" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: "spring" }} />
-    <motion.line x1="60" y1="30" x2="60" y2="90" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.3, duration: 0.6 }} />
-    <motion.line x1="60" y1="50" x2="35" y2="42" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 0.5 }} />
-    <motion.line x1="35" y1="42" x2="32" y2="16" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="60" y1="50" x2="85" y2="42" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 0.5 }} />
-    <motion.line x1="85" y1="42" x2="88" y2="16" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="28" y1="16" x2="92" y2="16" stroke="#2563EB" strokeWidth="3" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6, duration: 0.5 }} />
-    <motion.line x1="60" y1="90" x2="45" y2="140" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="45" y1="140" x2="42" y2="185" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6, duration: 0.5 }} />
-    <motion.line x1="60" y1="90" x2="75" y2="140" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="75" y1="140" x2="78" y2="185" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6, duration: 0.5 }} />
-    {/* Elbow angle arcs */}
-    <motion.path d="M32,28 A10,10 0 0,1 42,38" stroke="#2563EB" strokeWidth="1.5" strokeDasharray="2 3" fill="none"
-      initial={{ opacity: 0 }} animate={{ opacity: 0.7 }} transition={{ delay: 0.8 }} />
-    <motion.path d="M78,28 A10,10 0 0,0 88,38" stroke="#2563EB" strokeWidth="1.5" strokeDasharray="2 3" fill="none"
-      initial={{ opacity: 0 }} animate={{ opacity: 0.7 }} transition={{ delay: 0.9 }} />
-    {/* Joint dots */}
-    {[[35,42],[85,42],[32,16],[88,16],[45,140],[75,140],[42,185],[78,185]].map(([cx,cy], i) => (
-      <motion.circle key={i} cx={cx} cy={cy} r="3" fill="#F8F9FB" stroke="#0A1628" strokeWidth="1.5"
-        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 + i * 0.05, type: "spring", stiffness: 300 }} />
-    ))}
-  </svg>
-);
+/* ── Animated Pose Illustrations ── */
+const OHPPose = () => {
+  const t = { duration: 1.5, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" } as const;
 
-const SquatPose = () => (
-  <svg viewBox="0 0 120 200" fill="none" stroke="#0A1628" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
-    <motion.circle cx="60" cy="40" r="8" fill="#F8F9FB" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: "spring" }} />
-    <motion.line x1="60" y1="48" x2="60" y2="100" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.3, duration: 0.6 }} />
-    <motion.line x1="60" y1="60" x2="35" y2="80" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 0.5 }} />
-    <motion.line x1="35" y1="80" x2="30" y2="105" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="60" y1="60" x2="85" y2="80" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 0.5 }} />
-    <motion.line x1="85" y1="80" x2="90" y2="105" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="25" y1="105" x2="95" y2="105" stroke="#2563EB" strokeWidth="3" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.55, duration: 0.5 }} />
-    {/* Squat legs — bent */}
-    <motion.line x1="60" y1="100" x2="40" y2="130" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="40" y1="130" x2="35" y2="170" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6, duration: 0.5 }} />
-    <motion.line x1="35" y1="170" x2="30" y2="185" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.65, duration: 0.4 }} />
-    <motion.line x1="60" y1="100" x2="80" y2="130" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="80" y1="130" x2="85" y2="170" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6, duration: 0.5 }} />
-    <motion.line x1="85" y1="170" x2="90" y2="185" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.65, duration: 0.4 }} />
-    {/* Knee angle highlight */}
-    <motion.path d="M34,120 A14,14 0 0,1 48,124" stroke="#2563EB" strokeWidth="1.5" fill="none"
-      initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ delay: 0.9, duration: 0.5 }} />
-    <motion.text x="22" y="120" fontSize="7" fontFamily="monospace" fill="#2563EB"
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}>90°</motion.text>
-    {/* Depth line */}
-    <motion.line x1="15" y1="100" x2="105" y2="100" stroke="#2563EB" strokeWidth="0.8" strokeDasharray="4 4"
-      initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} transition={{ delay: 0.8 }} />
-    <motion.text x="96" y="97" fontSize="6" fontFamily="monospace" fill="#2563EB"
-      initial={{ opacity: 0 }} animate={{ opacity: 0.6 }} transition={{ delay: 1 }}>DEPTH</motion.text>
-    {/* Joint dots */}
-    {[[35,80],[85,80],[40,130],[80,130],[35,170],[85,170]].map(([cx,cy], i) => (
-      <motion.circle key={i} cx={cx} cy={cy} r="3" fill="#F8F9FB" stroke="#0A1628" strokeWidth="1.5"
-        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 + i * 0.05, type: "spring", stiffness: 300 }} />
-    ))}
-  </svg>
-);
+  return (
+    <svg viewBox="0 0 120 200" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+      {/* Ground */}
+      <line x1="20" y1="180" x2="100" y2="180" stroke="#E8DFD1" strokeWidth="2" strokeDasharray="4 4" />
 
-const RowPose = () => (
-  <svg viewBox="0 0 140 200" fill="none" stroke="#0A1628" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
-    <motion.circle cx="95" cy="55" r="8" fill="#F8F9FB" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: "spring" }} />
-    {/* Spine — angled forward */}
-    <motion.line x1="90" y1="62" x2="55" y2="100" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.3, duration: 0.6 }} />
-    {/* Torso angle indicator */}
-    <motion.path d="M55,100 L55,70" stroke="#2563EB" strokeWidth="0.8" strokeDasharray="3 3"
-      initial={{ opacity: 0 }} animate={{ opacity: 0.5 }} transition={{ delay: 1 }} />
-    <motion.path d="M60,82 A12,12 0 0,1 63,93" stroke="#2563EB" strokeWidth="1.5" fill="none"
-      initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ delay: 1.1, duration: 0.5 }} />
-    <motion.text x="66" y="88" fontSize="6" fontFamily="monospace" fill="#2563EB"
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}>45°</motion.text>
-    {/* Arms — pulling bar */}
-    <motion.line x1="80" y1="72" x2="65" y2="95" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 0.5 }} />
-    <motion.line x1="65" y1="95" x2="58" y2="115" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="80" y1="72" x2="100" y2="85" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 0.5 }} />
-    <motion.line x1="100" y1="85" x2="105" y2="110" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    {/* Bar */}
-    <motion.line x1="50" y1="115" x2="112" y2="110" stroke="#2563EB" strokeWidth="3" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.55, duration: 0.5 }} />
-    {/* Legs */}
-    <motion.line x1="55" y1="100" x2="40" y2="145" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="40" y1="145" x2="35" y2="185" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6, duration: 0.5 }} />
-    <motion.line x1="55" y1="100" x2="70" y2="145" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.5 }} />
-    <motion.line x1="70" y1="145" x2="75" y2="185" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6, duration: 0.5 }} />
-    {/* Lumbar curve highlight */}
-    <motion.path d="M65,82 Q58,90 57,100" stroke="#EF4444" strokeWidth="2" fill="none" strokeDasharray="3 3"
-      initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.6 }} transition={{ delay: 1.2, duration: 0.5 }} />
-    {/* Joint dots */}
-    {[[65,95],[100,85],[40,145],[70,145]].map(([cx,cy], i) => (
-      <motion.circle key={i} cx={cx} cy={cy} r="3" fill="#F8F9FB" stroke="#0A1628" strokeWidth="1.5"
-        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 + i * 0.05, type: "spring", stiffness: 300 }} />
-    ))}
-  </svg>
-);
+      {/* Legs (Static for OHP) */}
+      <line x1="50" y1="100" x2="45" y2="140" stroke="#0F1729" strokeWidth="2.5" />
+      <line x1="45" y1="140" x2="45" y2="180" stroke="#0F1729" strokeWidth="2.5" />
+      <line x1="70" y1="100" x2="75" y2="140" stroke="#0F1729" strokeWidth="2.5" />
+      <line x1="75" y1="140" x2="75" y2="180" stroke="#0F1729" strokeWidth="2.5" />
+      <line x1="35" y1="180" x2="55" y2="180" stroke="#0F1729" strokeWidth="2.5" /> {/* Feet */}
+      <line x1="65" y1="180" x2="85" y2="180" stroke="#0F1729" strokeWidth="2.5" />
+
+      {/* Torso Base */}
+      <line x1="50" y1="100" x2="70" y2="100" stroke="#0F1729" strokeWidth="2.5" />
+      <motion.line x1="50" y1="100" x2="40" y2="50" animate={{ y2: [50, 45, 50] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+      <motion.line x1="70" y1="100" x2="80" y2="50" animate={{ y2: [50, 45, 50] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+      <motion.line x1="40" y1="50" x2="80" y2="50" animate={{ y1: [50, 45, 50], y2: [50, 45, 50] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+
+      {/* Arms */}
+      <motion.line x1="40" y1="50" x2="30" y2="75" animate={{ y1: [50, 45, 50], x2: [30, 35, 30], y2: [75, 30, 75] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+      <motion.line x1="30" y1="75" x2="35" y2="50" animate={{ x1: [30, 35, 30], y1: [75, 30, 75], x2: [40, 40, 40], y2: [10, 10, 10] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+
+      <motion.line x1="80" y1="50" x2="90" y2="75" animate={{ y1: [50, 45, 50], x2: [90, 85, 90], y2: [75, 30, 75] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+      <motion.line x1="90" y1="75" x2="85" y2="50" animate={{ x1: [90, 85, 90], y1: [75, 30, 75], x2: [80, 80, 80], y2: [10, 10, 10] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+
+      {/* Barbell */}
+      <motion.line x1="20" y1="50" x2="100" y2="50" animate={{ y1: [50, 10, 50], y2: [50, 10, 50] }} transition={t} stroke="#E8613C" strokeWidth="3.5" />
+      
+      {/* Head */}
+      <motion.circle cx="60" cy="25" r="9" animate={{ cy: [25, 20, 25] }} transition={t} fill="#FEF0E0" stroke="#0F1729" strokeWidth="2" />
+
+      {/* Joints */}
+      <motion.circle cx="40" cy="50" r="3" animate={{ cy: [50, 45, 50] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <motion.circle cx="80" cy="50" r="3" animate={{ cy: [50, 45, 50] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <motion.circle cx="30" cy="75" r="3" animate={{ cx: [30, 35, 30], cy: [75, 30, 75] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <motion.circle cx="90" cy="75" r="3" animate={{ cx: [90, 85, 90], cy: [75, 30, 75] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+    </svg>
+  );
+};
+
+const SquatPose = () => {
+  const t = { duration: 1.5, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" } as const;
+
+  return (
+    <svg viewBox="0 0 120 200" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+      {/* Ground */}
+      <line x1="20" y1="170" x2="100" y2="170" stroke="#E8DFD1" strokeWidth="2" strokeDasharray="4 4" />
+      <line x1="70" y1="170" x2="90" y2="170" stroke="#0F1729" strokeWidth="2.5" /> {/* Foot */}
+
+      {/* Calf */}
+      <motion.line x1="70" y1="170" x2="70" y2="120" animate={{ x2: [70, 95, 70], y2: [120, 120, 120] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+      {/* Thigh */}
+      <motion.line x1="70" y1="120" x2="70" y2="70" animate={{ x1: [70, 95, 70], y1: [120, 120, 120], x2: [70, 45, 70], y2: [70, 130, 70] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+      {/* Torso */}
+      <motion.line x1="70" y1="70" x2="70" y2="30" animate={{ x1: [70, 45, 70], y1: [70, 130, 70], x2: [70, 75, 70], y2: [30, 75, 30] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+      
+      {/* Arm */}
+      <motion.line x1="70" y1="30" x2="60" y2="45" animate={{ x1: [70, 75, 70], y1: [30, 75, 30], x2: [60, 65, 60], y2: [45, 90, 45] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+      <motion.line x1="60" y1="45" x2="70" y2="30" animate={{ x1: [60, 65, 60], y1: [45, 90, 45], x2: [70, 75, 70], y2: [30, 75, 30] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+
+      {/* Head */}
+      <motion.circle cx="70" cy="12" r="9" animate={{ cx: [70, 85, 70], cy: [12, 55, 12] }} transition={t} fill="#FEF0E0" stroke="#0F1729" strokeWidth="2" />
+      
+      {/* Barbell */}
+      <motion.circle cx="70" cy="30" r="5" animate={{ cx: [70, 75, 70], cy: [30, 75, 30] }} transition={t} fill="#E8613C" />
+
+      {/* Angle Indicator */}
+      <motion.path 
+        d="M 60 85 A 15 15 0 0 1 70 95" 
+        animate={{ d: ["M 65 85 A 15 15 0 0 1 75 95", "M 55 115 A 15 15 0 0 1 65 145", "M 65 85 A 15 15 0 0 1 75 95"], opacity: [0, 1, 0] }} 
+        transition={t} stroke="#E8613C" strokeWidth="1.5" fill="none" strokeDasharray="2 2" 
+      />
+
+      {/* Joints */}
+      <motion.circle cx="70" cy="120" r="3" animate={{ cx: [70, 95, 70], cy: [120, 120, 120] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <motion.circle cx="70" cy="70" r="3" animate={{ cx: [70, 45, 70], cy: [70, 130, 70] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <motion.circle cx="70" cy="30" r="3" animate={{ cx: [70, 75, 70], cy: [30, 75, 30] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <motion.circle cx="60" cy="45" r="3" animate={{ cx: [60, 65, 60], cy: [45, 90, 45] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+    </svg>
+  );
+};
+
+const RowPose = () => {
+  const t = { duration: 1.2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" } as const;
+
+  return (
+    <svg viewBox="0 0 140 200" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+      {/* Ground */}
+      <line x1="20" y1="170" x2="120" y2="170" stroke="#E8DFD1" strokeWidth="2" strokeDasharray="4 4" />
+      <line x1="70" y1="170" x2="90" y2="170" stroke="#0F1729" strokeWidth="2.5" />
+
+      {/* Calf */}
+      <line x1="70" y1="170" x2="80" y2="140" stroke="#0F1729" strokeWidth="2.5" />
+      {/* Thigh */}
+      <line x1="80" y1="140" x2="40" y2="100" stroke="#0F1729" strokeWidth="2.5" />
+      {/* Torso */}
+      <line x1="40" y1="100" x2="90" y2="60" stroke="#0F1729" strokeWidth="2.5" />
+      
+      {/* Head */}
+      <circle cx="105" cy="45" r="9" fill="#FEF0E0" stroke="#0F1729" strokeWidth="2" />
+
+      {/* Torso Angle Indicator */}
+      <path d="M 40 100 L 90 100" stroke="#E8DFD1" strokeWidth="1.5" strokeDasharray="3 3" />
+      <path d="M 60 100 A 20 20 0 0 0 65 80" stroke="#E8613C" strokeWidth="1.5" fill="none" />
+      <text x="68" y="90" fontSize="7" fontFamily="system-ui" fontWeight="600" fill="#E8613C">45°</text>
+
+      {/* Arm */}
+      <motion.line x1="90" y1="60" x2="85" y2="95" animate={{ x2: [85, 65, 85], y2: [95, 55, 95] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+      <motion.line x1="85" y1="95" x2="85" y2="130" animate={{ x1: [85, 65, 85], y1: [95, 55, 95], x2: [85, 75, 85], y2: [130, 95, 130] }} transition={t} stroke="#0F1729" strokeWidth="2.5" />
+
+      {/* Barbell Plates */}
+      <motion.circle cx="85" cy="130" r="14" animate={{ cx: [85, 75, 85], cy: [130, 95, 130] }} transition={t} fill="#0F1729" opacity="0.1" />
+      <motion.circle cx="85" cy="130" r="5" animate={{ cx: [85, 75, 85], cy: [130, 95, 130] }} transition={t} fill="#E8613C" />
+
+      {/* Joints */}
+      <circle cx="80" cy="140" r="3" fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <circle cx="40" cy="100" r="3" fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <circle cx="90" cy="60" r="3" fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <motion.circle cx="85" cy="95" r="3" animate={{ cx: [85, 65, 85], cy: [95, 55, 95] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+      <motion.circle cx="85" cy="130" r="3" animate={{ cx: [85, 75, 85], cy: [130, 95, 130] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="1.5" />
+    </svg>
+  );
+};
 
 const PoseSVG: Record<ExerciseId, React.FC> = { ohp: OHPPose, squat: SquatPose, row: RowPose };
+
+function getBarColor(value: number) {
+  if (value > 40) return 'bg-red-400';
+  if (value > 20) return 'bg-amber-400';
+  return 'bg-[#E8613C]';
+}
 
 export default function ExerciseShowcase() {
   const [active, setActive] = useState<ExerciseId>('squat');
@@ -184,46 +219,51 @@ export default function ExerciseShowcase() {
   const Pose = PoseSVG[active];
 
   return (
-    <div className="relative w-full bg-[#F0F4FA] border border-[#C8D3E8]">
-      {/* Corner marks */}
-      <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-[#0A1628] z-10" />
-      <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-[#0A1628] z-10" />
-      <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-[#0A1628] z-10" />
-      <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-[#0A1628] z-10" />
-
-      <div className="grid md:grid-cols-[280px_1fr] min-h-[420px]">
+    <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-[0_4px_40px_rgba(15,23,41,0.06)]">
+      <div className="grid md:grid-cols-[300px_1fr] min-h-[460px]">
         {/* Left — animated pose */}
-        <div className="relative border-r border-[#C8D3E8] flex items-center justify-center p-6 bg-white/50">
-          {/* Grid overlay */}
-          <svg className="absolute inset-0 w-full h-full opacity-15" preserveAspectRatio="xMidYMid slice">
+        <div className="relative border-r border-[#F5F0E8] flex items-center justify-center p-8 bg-gradient-to-br from-[#FFFBF5] to-[#FEF0E0]/30">
+          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" preserveAspectRatio="xMidYMid slice">
             <defs>
-              <pattern id="ex-grid" width="16" height="16" patternUnits="userSpaceOnUse">
-                <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#0A1628" strokeWidth="0.3"/>
+              <pattern id="ex-grid-new" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0F1729" strokeWidth="0.3"/>
               </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#ex-grid)"/>
+            <rect width="100%" height="100%" fill="url(#ex-grid-new)"/>
           </svg>
-
-          <div className="absolute top-3 left-4 z-20">
-            <span className="text-[8px] font-mono text-[#6B7A99] tracking-[0.2em] uppercase">POSE.RENDER</span>
-          </div>
 
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
-              initial={{ opacity: 0, scale: 0.85 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.85 }}
-              transition={{ duration: 0.35 }}
-              className="relative z-10 w-32 h-52"
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="relative z-10 w-36 h-56"
             >
               <Pose />
             </motion.div>
           </AnimatePresence>
+
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            {(Object.keys(EXERCISE_DATA) as ExerciseId[]).map((id) => (
+              <button
+                key={id}
+                onClick={() => setActive(id)}
+                className={`relative px-4 py-2 text-xs font-medium rounded-full transition-all duration-300 ${
+                  active === id
+                    ? 'bg-[#0F1729] text-white shadow-lg'
+                    : 'bg-white/80 text-[#6B7280] hover:text-[#0F1729] hover:bg-white border border-[#E8DFD1]'
+                }`}
+              >
+                {EXERCISE_DATA[id].label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Right — data panel */}
-        <div className="p-6 flex flex-col justify-between">
+        <div className="p-8 flex flex-col justify-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
@@ -232,35 +272,39 @@ export default function ExerciseShowcase() {
               animate="visible"
               exit="exit"
             >
-              <motion.div variants={itemVariants} className="flex items-start justify-between gap-4 mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-[#0A1628] tracking-tight">{data.title}</h3>
-                  <p className="text-[10px] font-mono text-[#6B7A99] tracking-widest mt-0.5">{data.subtitle}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-[#0A1628] tracking-tighter leading-none">{data.reps.toLocaleString()}</p>
-                  <p className="text-[9px] font-mono text-[#6B7A99] tracking-widest">REPS</p>
+              <motion.div variants={itemVariants} className="mb-6">
+                <h3 className="font-display text-2xl font-bold text-[#0F1729] tracking-tight">{data.title}</h3>
+                <div className="flex items-center gap-4 mt-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-2xl font-display font-bold text-[#E8613C]">{data.reps.toLocaleString()}</span>
+                    <span className="text-sm text-[#6B7280]">reps</span>
+                  </div>
+                  <div className="w-px h-5 bg-[#E8DFD1]" />
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-2xl font-display font-bold text-[#0F1729]">{data.subjects}</span>
+                    <span className="text-sm text-[#6B7280]">subjects</span>
+                  </div>
                 </div>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="mb-4">
-                <p className="text-[9px] font-mono text-[#6B7A99] tracking-[0.2em] uppercase mb-3">Error Prevalence</p>
-                <div className="space-y-3">
+              <motion.div variants={itemVariants} className="mb-6">
+                <p className="text-xs font-medium text-[#6B7280] uppercase tracking-wider mb-4">Error Prevalence</p>
+                <div className="space-y-4">
                   {data.errors.map((err, idx) => (
                     <div key={err.label}>
-                      <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-[#0A1628]">{err.label}</span>
-                          <span className="text-[8px] font-mono text-[#6B7A99] border border-[#C8D3E8] px-1.5 py-0.5">{err.format}</span>
+                          <span className="text-sm font-semibold text-[#0F1729]">{err.label}</span>
+                          <span className="text-[10px] font-medium text-[#6B7280] bg-[#F5F0E8] px-2 py-0.5 rounded-full">{err.format}</span>
                         </div>
-                        <span className="text-xs font-mono text-[#6B7A99]">{err.value}%</span>
+                        <span className="text-sm font-bold text-[#0F1729]">{err.value}%</span>
                       </div>
-                      <div className="relative h-1.5 w-full bg-[#EDF0F7] overflow-hidden">
+                      <div className="relative h-2 w-full bg-[#F5F0E8] rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${err.value}%` }}
-                          transition={{ duration: 0.8, delay: 0.3 + idx * 0.12 }}
-                          className={`absolute top-0 bottom-0 left-0 ${err.value > 40 ? 'bg-[#EF4444]' : err.value > 20 ? 'bg-[#F59E0B]' : 'bg-[#2563EB]'}`}
+                          transition={{ duration: 1, delay: 0.3 + idx * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                          className={`absolute top-0 bottom-0 left-0 rounded-full ${getBarColor(err.value)}`}
                         />
                       </div>
                     </div>
@@ -268,32 +312,15 @@ export default function ExerciseShowcase() {
                 </div>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="flex items-center gap-4 text-[10px] font-mono text-[#6B7A99] pt-2 border-t border-[#EDF0F7]">
-                <span>{data.subjects} subjects</span>
-                <span className="w-px h-3 bg-[#C8D3E8]" />
+              <motion.div variants={itemVariants} className="flex items-center gap-3 text-xs text-[#6B7280] pt-4 border-t border-[#F5F0E8]">
                 <span>~{(data.reps / data.subjects).toFixed(1)} reps/subject</span>
-                <span className="w-px h-3 bg-[#C8D3E8]" />
-                <span>Zero leakage splits</span>
+                <span className="w-1 h-1 bg-[#E8DFD1] rounded-full" />
+                <span>Zero subject leakage</span>
+                <span className="w-1 h-1 bg-[#E8DFD1] rounded-full" />
+                <span>Train/Val/Test splits</span>
               </motion.div>
             </motion.div>
           </AnimatePresence>
-
-          {/* Switcher */}
-          <div className="flex gap-1 mt-4">
-            {(Object.keys(EXERCISE_DATA) as ExerciseId[]).map((id) => (
-              <button
-                key={id}
-                onClick={() => setActive(id)}
-                className={`relative px-4 py-2 text-[10px] font-mono tracking-[0.15em] uppercase transition-colors ${
-                  active === id
-                    ? 'bg-[#0A1628] text-[#F8F9FB]'
-                    : 'bg-white border border-[#C8D3E8] text-[#6B7A99] hover:text-[#0A1628] hover:border-[#0A1628]'
-                }`}
-              >
-                {EXERCISE_DATA[id].label}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </div>

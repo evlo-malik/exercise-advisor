@@ -5,274 +5,294 @@ import { useRef } from "react";
 import ExerciseShowcase from "@/components/ui/exercise-showcase";
 
 /* ═══════════════════════════════════════════════
-   CUSTOM SVG ICONS
+   REVEAL WRAPPER
 ═══════════════════════════════════════════════ */
-
-const IconCamera = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
-  </svg>
-);
-
-const IconNodes = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
-    <line x1="12" y1="7" x2="5" y2="17"/><line x1="12" y1="7" x2="19" y2="17"/>
-  </svg>
-);
-
-const IconClassify = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-    <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
-  </svg>
-);
-
-const IconCheck = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-  </svg>
-);
-
-const IconTarget = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-  </svg>
-);
-
-const IconWarning = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-    <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-  </svg>
-);
-
-const IconActivity = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-  </svg>
-);
+const Reveal = ({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 /* ═══════════════════════════════════════════════
-   SKELETON SVG — hero right panel
+   SKELETON HERO ANIMATION
 ═══════════════════════════════════════════════ */
 const SkeletonHero = () => {
-  const joints = [
-    { cx: 100, cy: 40, r: 5 }, { cx: 100, cy: 58, r: 4 },
-    { cx: 68, cy: 78, r: 3.5 }, { cx: 132, cy: 78, r: 3.5 },
-    { cx: 52, cy: 110, r: 3 }, { cx: 148, cy: 110, r: 3 },
-    { cx: 42, cy: 140, r: 2.5 }, { cx: 158, cy: 140, r: 2.5 },
-    { cx: 100, cy: 110, r: 4 },
-    { cx: 82, cy: 165, r: 3.5 }, { cx: 118, cy: 165, r: 3.5 },
-    { cx: 78, cy: 220, r: 3 }, { cx: 122, cy: 220, r: 3 },
-  ];
+  const t = { duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" } as const;
 
   return (
-    <div className="relative w-full h-full">
-      <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#0A1628]" />
-      <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#0A1628]" />
-      <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#0A1628]" />
-      <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#0A1628]" />
+    <div className="relative w-full h-full flex items-center justify-center">
+      <svg
+        viewBox="0 0 200 260"
+        className="relative z-10 w-full max-w-[280px] h-auto"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {/* Ground */}
+        <line x1="30" y1="230" x2="170" y2="230" stroke="#E8DFD1" strokeWidth="2" strokeDasharray="4 4" />
+        <line x1="90" y1="230" x2="130" y2="230" stroke="#0F1729" strokeWidth="3.5" /> {/* Foot */}
 
-      <svg className="absolute inset-0 w-full h-full opacity-20" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <pattern id="sk-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0A1628" strokeWidth="0.4"/>
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#sk-grid)"/>
-      </svg>
+        {/* Calf */}
+        <motion.line x1="100" y1="230" x2="100" y2="150" animate={{ x2: [100, 135, 100], y2: [150, 150, 150] }} transition={t} stroke="#0F1729" strokeWidth="3.5" />
+        {/* Thigh */}
+        <motion.line x1="100" y1="150" x2="100" y2="80" animate={{ x1: [100, 135, 100], y1: [150, 150, 150], x2: [100, 60, 100], y2: [80, 160, 80] }} transition={t} stroke="#0F1729" strokeWidth="3.5" />
+        {/* Torso */}
+        <motion.line x1="100" y1="80" x2="100" y2="30" animate={{ x1: [100, 60, 100], y1: [80, 160, 80], x2: [100, 110, 100], y2: [30, 90, 30] }} transition={t} stroke="#0F1729" strokeWidth="3.5" />
+        
+        {/* Arm (Upper) */}
+        <motion.line x1="100" y1="30" x2="80" y2="50" animate={{ x1: [100, 110, 100], y1: [30, 90, 30], x2: [80, 90, 80], y2: [50, 115, 50] }} transition={t} stroke="#0F1729" strokeWidth="3.5" />
+        {/* Arm (Lower) */}
+        <motion.line x1="80" y1="50" x2="100" y2="30" animate={{ x1: [80, 90, 80], y1: [50, 115, 50], x2: [100, 110, 100], y2: [30, 90, 30] }} transition={t} stroke="#0F1729" strokeWidth="3.5" />
 
-      <div className="absolute top-4 left-8 z-20">
-        <span className="text-[9px] font-mono text-[#6B7A99] tracking-[0.2em] uppercase flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 bg-[#2563EB] rounded-full pulse-dot inline-block" />
-          POSE.ACTIVE
-        </span>
-      </div>
-      <div className="absolute top-4 right-8 z-20 text-right">
-        <div className="text-[9px] font-mono text-[#6B7A99] tracking-widest uppercase">CONF</div>
-        <div className="text-2xl font-bold text-[#0A1628] tracking-tighter leading-tight">97.4%</div>
-      </div>
+        {/* Head */}
+        <motion.circle cx="100" cy="8" r="14" animate={{ cx: [100, 125, 100], cy: [8, 65, 8] }} transition={t} fill="#FEF0E0" stroke="#0F1729" strokeWidth="2.5" />
+        
+        {/* Barbell */}
+        <motion.circle cx="100" cy="30" r="7" animate={{ cx: [100, 110, 100], cy: [30, 90, 30] }} transition={t} fill="#E8613C" />
 
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
-        <div className="border border-[#0A1628] bg-[#0A1628] text-[#F8F9FB] px-4 py-1.5 text-[10px] font-mono tracking-[0.15em] flex items-center gap-2">
-          <svg viewBox="0 0 8 8" className="w-2 h-2 fill-current text-[#22C55E]"><circle cx="4" cy="4" r="4"/></svg>
-          POSTURE: SAFE
-        </div>
-      </div>
+        {/* Joint dots */}
+        <motion.circle cx="100" cy="150" r="4.5" animate={{ cx: [100, 135, 100], cy: [150, 150, 150] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="2.5" />
+        <motion.circle cx="100" cy="80" r="4.5" animate={{ cx: [100, 60, 100], cy: [80, 160, 80] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="2.5" />
+        <motion.circle cx="100" cy="30" r="4.5" animate={{ cx: [100, 110, 100], cy: [30, 90, 30] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="2.5" />
+        <motion.circle cx="80" cy="50" r="4.5" animate={{ cx: [80, 90, 80], cy: [50, 115, 50] }} transition={t} fill="#FFFBF5" stroke="#0F1729" strokeWidth="2.5" />
 
-      <svg viewBox="0 0 200 260" className="relative z-10 w-full h-full py-12 px-8" fill="none" strokeLinecap="round" strokeLinejoin="round">
-        {[
-          { d: "M100,58 L100,110", delay: 0 },
-          { d: "M68,78 L100,58 L132,78", delay: 0.1 },
-          { d: "M68,78 L52,110 L42,140", delay: 0.2 },
-          { d: "M132,78 L148,110 L158,140", delay: 0.2 },
-          { d: "M100,110 L82,165 L78,220", delay: 0.35 },
-          { d: "M100,110 L118,165 L122,220", delay: 0.35 },
-        ].map((bone, i) => (
-          <motion.path key={i} d={bone.d} stroke="#0A1628" strokeWidth="2" fill="none"
-            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-            transition={{ delay: bone.delay + 0.3, duration: 0.9, ease: "easeOut" }}
-          />
-        ))}
-        {[
-          { d: "M100,110 L82,165 L78,220", delay: 0.6 },
-          { d: "M100,110 L118,165 L122,220", delay: 0.6 },
-        ].map((b, i) => (
-          <motion.path key={`acc-${i}`} d={b.d} stroke="#2563EB" strokeWidth="0.8" strokeDasharray="3 5" fill="none"
-            initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.7 }}
-            transition={{ delay: b.delay, duration: 1, ease: "easeOut" }}
-          />
-        ))}
-        <motion.path d="M72,155 A16,16 0 0,1 90,153" stroke="#2563EB" strokeWidth="1.5" fill="none"
-          initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ delay: 1.2, duration: 0.5 }} />
-        <motion.text x="56" y="152" fontSize="7" fontFamily="monospace" fill="#2563EB"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }}>90°</motion.text>
-        <motion.path d="M110,153 A16,16 0 0,0 128,155" stroke="#2563EB" strokeWidth="1.5" fill="none"
-          initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ delay: 1.3, duration: 0.5 }} />
-        <motion.text x="127" y="152" fontSize="7" fontFamily="monospace" fill="#2563EB"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.7 }}>90°</motion.text>
-        {joints.map((j, i) => (
-          <motion.circle key={i} cx={j.cx} cy={j.cy} r={j.r} fill="#F8F9FB" stroke="#0A1628" strokeWidth="1.5"
-            initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.5 + i * 0.06, duration: 0.25, type: "spring", stiffness: 400 }}
-          />
-        ))}
-        {[{ cx: 82, cy: 165 }, { cx: 118, cy: 165 }].map((p, i) => (
-          <motion.circle key={`ring-${i}`} cx={p.cx} cy={p.cy} r={7} fill="none" stroke="#2563EB" strokeWidth="1.5"
-            initial={{ scale: 0, opacity: 0 }} animate={{ scale: [0, 1.3, 1], opacity: [0, 1, 0.9] }}
-            transition={{ delay: 1.0 + i * 0.1, duration: 0.5 }}
-          />
-        ))}
-        <motion.line x1="35" y1="78" x2="35" y2="220" stroke="#6B7A99" strokeWidth="0.6" strokeDasharray="2 4"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} />
-        <motion.line x1="30" y1="78" x2="40" y2="78" stroke="#6B7A99" strokeWidth="0.6"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} />
-        <motion.line x1="30" y1="220" x2="40" y2="220" stroke="#6B7A99" strokeWidth="0.6"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} />
+        {/* Angle indicator for knee */}
+        <motion.path 
+          d="M 100 120 A 30 30 0 0 1 100 180" 
+          animate={{ d: ["M 100 120 A 30 30 0 0 1 100 180", "M 115 130 A 30 30 0 0 1 125 170", "M 100 120 A 30 30 0 0 1 100 180"], opacity: [0, 1, 0] }} 
+          transition={t} stroke="#E8613C" strokeWidth="2.5" fill="none" strokeDasharray="3 3" 
+        />
+        <motion.text
+          x="125"
+          y="155"
+          fontSize="10"
+          fontFamily="system-ui"
+          fontWeight="700"
+          fill="#E8613C"
+          animate={{ x: [125, 155, 125], opacity: [0, 1, 0] }}
+          transition={t}
+        >
+          85°
+        </motion.text>
       </svg>
     </div>
   );
 };
 
 /* ═══════════════════════════════════════════════
-   SHARED UI
-═══════════════════════════════════════════════ */
-const PipelineIcon = ({ icon: Icon, active }: { icon: React.ElementType; active?: boolean }) => (
-  <div className={`w-9 h-9 border flex items-center justify-center flex-shrink-0 ${
-    active ? "border-[#0A1628] bg-[#0A1628] text-[#F8F9FB]" : "border-[#C8D3E8] bg-white text-[#6B7A99]"
-  }`}>
-    <Icon className="w-4 h-4" />
-  </div>
-);
-
-const SectionLabel = ({ label }: { label: string }) => (
-  <div className="flex items-center gap-3 mb-5">
-    <div className="w-4 h-px bg-[#0A1628]" />
-    <span className="text-[9px] font-mono tracking-[0.25em] text-[#6B7A99] uppercase">{label}</span>
-    <div className="flex-1 h-px bg-[#C8D3E8]" />
-  </div>
-);
-
-const Reveal = ({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 22 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay, duration: 0.55, ease: "easeOut" }} className={className}>
-      {children}
-    </motion.div>
-  );
-};
-
-const Waveform = () => {
-  const h = [6,14,9,20,8,18,5,22,12,7,16,24,10,15,8,20,6,18,11,9,22,14,7,19,5];
-  return (
-    <svg viewBox={`0 0 ${h.length * 6} 28`} className="w-full h-7" preserveAspectRatio="none">
-      {h.map((v, i) => (
-        <motion.rect key={i} x={i * 6 + 1} y={(28 - v) / 2} width={4} height={v}
-          fill="#0A1628" opacity={0.12 + (i % 3) * 0.08}
-          initial={{ scaleY: 0 }} animate={{ scaleY: 1 }}
-          transition={{ delay: 0.5 + i * 0.03, duration: 0.4 }}
-          style={{ transformOrigin: "center" }}
-        />
-      ))}
-    </svg>
-  );
-};
-
-/* ═══════════════════════════════════════════════
-   TCN ARCHITECTURE SVG ANIMATION
+   TCN ARCHITECTURE DIAGRAM
 ═══════════════════════════════════════════════ */
 const TCNDiagram = () => (
-  <div className="relative border border-[#C8D3E8] bg-white p-6">
-    <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-[#0A1628]" />
-    <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-[#0A1628]" />
-    <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-[#0A1628]" />
-    <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-[#0A1628]" />
-
-    <p className="text-[9px] font-mono tracking-[0.2em] text-[#6B7A99] uppercase mb-4">Model Architecture</p>
-    <h3 className="text-lg font-bold text-[#0A1628] tracking-tight mb-5 leading-snug">
+  <div className="bg-white rounded-2xl p-8 shadow-[0_4px_40px_rgba(15,23,41,0.06)]">
+    <p className="text-xs font-medium text-[#6B7280] uppercase tracking-wider mb-2">
+      Model Architecture
+    </p>
+    <h3 className="font-display text-xl font-bold text-[#0F1729] tracking-tight mb-6">
       Temporal Convolutional Network
     </h3>
 
-    <svg viewBox="0 0 320 120" className="w-full h-auto mb-4" fill="none">
-      {/* Input block */}
-      <motion.rect x="0" y="35" width="60" height="50" fill="#EDF0F7" stroke="#C8D3E8" strokeWidth="1"
-        initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.4 }} />
-      <motion.text x="30" y="55" fontSize="7" fontFamily="monospace" fill="#0A1628" textAnchor="middle"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>100 frames</motion.text>
-      <motion.text x="30" y="68" fontSize="7" fontFamily="monospace" fill="#6B7A99" textAnchor="middle"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }}>222 features</motion.text>
+    <svg viewBox="0 0 320 120" className="w-full h-auto mb-6" fill="none">
+      {/* Input */}
+      <motion.rect
+        x="0"
+        y="35"
+        width="60"
+        height="50"
+        rx="8"
+        fill="#FEF0E0"
+        stroke="#E8DFD1"
+        strokeWidth="1"
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      />
+      <motion.text
+        x="30"
+        y="56"
+        fontSize="7"
+        fontFamily="system-ui"
+        fontWeight="600"
+        fill="#0F1729"
+        textAnchor="middle"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        100 frames
+      </motion.text>
+      <motion.text
+        x="30"
+        y="69"
+        fontSize="7"
+        fontFamily="system-ui"
+        fill="#6B7280"
+        textAnchor="middle"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.45 }}
+      >
+        222 features
+      </motion.text>
 
       {/* Arrow */}
-      <motion.line x1="62" y1="60" x2="78" y2="60" stroke="#0A1628" strokeWidth="1"
-        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5, duration: 0.3 }} />
-      <motion.polygon points="78,56 85,60 78,64" fill="#0A1628"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} />
+      <motion.line
+        x1="62"
+        y1="60"
+        x2="82"
+        y2="60"
+        stroke="#E8DFD1"
+        strokeWidth="2"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ delay: 0.5, duration: 0.3 }}
+      />
+      <motion.polygon
+        points="80,56 87,60 80,64"
+        fill="#0F1729"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+      />
 
       {/* TCN blocks */}
-      {[0,1,2,3,4,5].map((i) => (
-        <motion.g key={i}
-          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 + i * 0.08, duration: 0.35 }}>
-          <rect x={88 + i * 28} y={25 + i * 3} width={24} height={70 - i * 6}
-            fill={i < 3 ? "#EDF0F7" : "#0A1628"} stroke="#C8D3E8" strokeWidth="0.5" />
-          <text x={100 + i * 28} y={63} fontSize="5" fontFamily="monospace" textAnchor="middle"
-            fill={i < 3 ? "#0A1628" : "#F8F9FB"}>d={Math.pow(2, i)}</text>
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <motion.g
+          key={i}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}
+        >
+          <rect
+            x={90 + i * 28}
+            y={25 + i * 3}
+            width={24}
+            height={70 - i * 6}
+            rx="4"
+            fill={i < 3 ? "#FEF0E0" : "#0F1729"}
+            stroke={i < 3 ? "#E8DFD1" : "none"}
+            strokeWidth="0.5"
+          />
+          <text
+            x={102 + i * 28}
+            y={63}
+            fontSize="5"
+            fontFamily="system-ui"
+            fontWeight="600"
+            textAnchor="middle"
+            fill={i < 3 ? "#0F1729" : "#FFFBF5"}
+          >
+            d={Math.pow(2, i)}
+          </text>
         </motion.g>
       ))}
 
       {/* Arrow to output */}
-      <motion.line x1="258" y1="60" x2="270" y2="60" stroke="#0A1628" strokeWidth="1"
-        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 1.1, duration: 0.3 }} />
-      <motion.polygon points="270,56 277,60 270,64" fill="#0A1628"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} />
+      <motion.line
+        x1="258"
+        y1="60"
+        x2="274"
+        y2="60"
+        stroke="#E8DFD1"
+        strokeWidth="2"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ delay: 1.2, duration: 0.3 }}
+      />
+      <motion.polygon
+        points="272,56 279,60 272,64"
+        fill="#0F1729"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.3 }}
+      />
 
       {/* Output heads */}
-      <motion.rect x="280" y="20" width="38" height="30" fill="#2563EB" stroke="none"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }} />
-      <motion.text x="299" y="38" fontSize="5.5" fontFamily="monospace" fill="#FFFFFF" textAnchor="middle"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}>Score</motion.text>
+      <motion.rect
+        x="282"
+        y="20"
+        width="36"
+        height="30"
+        rx="6"
+        fill="#E8613C"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4 }}
+      />
+      <motion.text
+        x="300"
+        y="39"
+        fontSize="6"
+        fontFamily="system-ui"
+        fontWeight="700"
+        fill="#FFFFFF"
+        textAnchor="middle"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+      >
+        Score
+      </motion.text>
 
-      <motion.rect x="280" y="55" width="38" height="30" fill="#0A1628" stroke="none"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.35 }} />
-      <motion.text x="299" y="73" fontSize="5.5" fontFamily="monospace" fill="#F8F9FB" textAnchor="middle"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.45 }}>Errors</motion.text>
+      <motion.rect
+        x="282"
+        y="55"
+        width="36"
+        height="30"
+        rx="6"
+        fill="#0F1729"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.45 }}
+      />
+      <motion.text
+        x="300"
+        y="74"
+        fontSize="6"
+        fontFamily="system-ui"
+        fontWeight="700"
+        fill="#FFFBF5"
+        textAnchor="middle"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.55 }}
+      >
+        Errors
+      </motion.text>
     </svg>
 
-    <div className="grid grid-cols-3 gap-3 text-center">
+    <div className="grid grid-cols-3 gap-3">
       {[
         { val: "147k", label: "Parameters" },
         { val: "6", label: "TCN Blocks" },
-        { val: "100+", label: "Frame Receptive Field" },
+        { val: "100+", label: "Receptive Field" },
       ].map((s, i) => (
-        <Reveal key={i} delay={i * 0.05}>
-          <div className="border border-[#EDF0F7] py-2">
-            <p className="text-lg font-bold text-[#0A1628] tracking-tighter leading-none">{s.val}</p>
-            <p className="text-[9px] font-mono text-[#6B7A99] tracking-widest mt-0.5">{s.label}</p>
-          </div>
-        </Reveal>
+        <div
+          key={i}
+          className="bg-[#FFFBF5] rounded-xl py-3 px-2 text-center"
+        >
+          <p className="font-display text-lg font-bold text-[#0F1729] leading-none">
+            {s.val}
+          </p>
+          <p className="text-[10px] text-[#6B7280] mt-1">{s.label}</p>
+        </div>
       ))}
     </div>
   </div>
@@ -283,209 +303,476 @@ const TCNDiagram = () => (
 ═══════════════════════════════════════════════ */
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#F8F9FB] text-[#0A1628] overflow-x-hidden selection:bg-[#BFDBFE]">
-
-      {/* NAV */}
-      <header className="sticky top-0 z-50 bg-[#F8F9FB]/90 backdrop-blur-sm border-b border-[#C8D3E8]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 h-12 flex items-center justify-between">
+    <div className="min-h-screen bg-[#FFFBF5] text-[#0F1729] overflow-x-hidden font-body">
+      {/* ─── NAVIGATION ─── */}
+      <header className="sticky top-0 z-50 bg-[#FFFBF5]/80 backdrop-blur-xl border-b border-[#E8DFD1]/60">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <svg viewBox="0 0 20 20" className="w-5 h-5" fill="none" stroke="#0A1628" strokeWidth="1.5">
-              <circle cx="10" cy="6" r="2"/><circle cx="5" cy="15" r="1.5"/><circle cx="15" cy="15" r="1.5"/>
-              <line x1="10" y1="8" x2="5" y2="13.5"/><line x1="10" y1="8" x2="15" y2="13.5"/>
-              <line x1="10" y1="8" x2="10" y2="13"/>
-            </svg>
-            <span className="text-sm font-bold tracking-[0.05em]">EXERCISE ADVISOR</span>
+            <div className="w-9 h-9 bg-[#0F1729] rounded-xl flex items-center justify-center">
+              <svg
+                viewBox="0 0 20 20"
+                className="w-5 h-5"
+                fill="none"
+                stroke="#FFFBF5"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              >
+                <circle cx="10" cy="5" r="2.5" />
+                <line x1="10" y1="7.5" x2="10" y2="13" />
+                <line x1="10" y1="9" x2="5" y2="13" />
+                <line x1="10" y1="9" x2="15" y2="13" />
+                <line x1="10" y1="13" x2="6" y2="18" />
+                <line x1="10" y1="13" x2="14" y2="18" />
+              </svg>
+            </div>
+            <span className="font-display text-base font-bold tracking-tight">
+              FormCoach
+            </span>
           </div>
-          <nav className="hidden md:flex items-center gap-8 text-[11px] font-mono tracking-[0.15em] text-[#6B7A99]">
-            <a href="#problem" className="hover:text-[#0A1628] transition-colors uppercase">Problem</a>
-            <a href="#solution" className="hover:text-[#0A1628] transition-colors uppercase">Solution</a>
-            <a href="#data" className="hover:text-[#0A1628] transition-colors uppercase">Data</a>
-            <a href="#architecture" className="hover:text-[#0A1628] transition-colors uppercase">Architecture</a>
+
+          <nav className="hidden md:flex items-center gap-8 text-sm text-[#6B7280]">
+            <a
+              href="#problem"
+              className="hover:text-[#0F1729] transition-colors"
+            >
+              Problem
+            </a>
+            <a href="#why-ml" className="hover:text-[#0F1729] transition-colors">
+              Why ML
+            </a>
+            <a
+              href="#pipeline"
+              className="hover:text-[#0F1729] transition-colors"
+            >
+              How It Works
+            </a>
+            <a href="#data" className="hover:text-[#0F1729] transition-colors">
+              Data
+            </a>
+            <a
+              href="#architecture"
+              className="hover:text-[#0F1729] transition-colors"
+            >
+              Architecture
+            </a>
           </nav>
-          <div className="flex items-center gap-2 text-[9px] font-mono text-[#6B7A99] tracking-[0.15em]">
-            <span className="w-1.5 h-1.5 bg-[#22C55E] rounded-full pulse-dot inline-block" />
-            <span className="hidden sm:inline">SYS.ACTIVE</span>
+
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline text-xs text-[#6B7280]">
+              Imperial College
+            </span>
+            <div className="w-2 h-2 bg-green-400 rounded-full pulse-soft" />
           </div>
         </div>
       </header>
 
-      {/* HERO */}
-      <section className="relative min-h-[calc(100vh-48px)] grid lg:grid-cols-2 overflow-hidden">
-        <div className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-[#0A1628] z-20 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-10 h-10 border-t-2 border-r-2 border-[#0A1628] z-20 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-10 h-10 border-b-2 border-l-2 border-[#0A1628] z-20 pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-[#0A1628] z-20 pointer-events-none" />
+      {/* ─── HERO ─── */}
+      <section className="relative hero-gradient overflow-hidden">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 pt-20 pb-24 lg:pt-28 lg:pb-32">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm border border-[#E8DFD1] rounded-full px-4 py-2 mb-8">
+                  <div className="w-1.5 h-1.5 bg-[#E8613C] rounded-full" />
+                  <span className="text-xs text-[#6B7280] font-medium">
+                    Imperial College London &middot; Group 6 &middot;
+                    Demystifying ML
+                  </span>
+                </div>
+              </motion.div>
 
-        <div className="relative flex flex-col justify-center px-8 lg:px-16 py-20 lg:py-0 border-r border-[#C8D3E8]">
-          <div className="absolute left-0 top-0 bottom-0 w-1 dither opacity-20" />
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="max-w-lg">
-            <div className="flex items-center gap-2 mb-6 opacity-50">
-              <div className="w-6 h-px bg-[#0A1628]" />
-              <span className="text-[9px] font-mono tracking-[0.25em] text-[#6B7A99] uppercase">001</span>
-              <div className="flex-1 h-px bg-[#C8D3E8]" />
+              <motion.h1
+                className="font-display text-5xl sm:text-6xl lg:text-[4.2rem] font-extrabold leading-[1.05] tracking-tight mb-6 animate-rise"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+              >
+                Your AI-Powered{" "}
+                <span className="text-[#E8613C]">Form Coach</span>
+              </motion.h1>
+
+              <motion.p
+                className="text-lg text-[#4B5563] leading-relaxed mb-10 max-w-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.25 }}
+              >
+                We built a machine learning system that watches your exercise
+                form through any standard camera and tells you exactly what to
+                fix &mdash; no personal trainer required.
+              </motion.p>
+
+              <motion.div
+                className="flex flex-wrap gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+              >
+                <a
+                  href="#pipeline"
+                  className="bg-[#0F1729] text-white px-7 py-3.5 rounded-xl text-sm font-semibold hover:bg-[#1A2744] transition-all duration-300 shadow-lg shadow-[#0F1729]/10 hover:shadow-xl hover:shadow-[#0F1729]/15 hover:-translate-y-0.5"
+                >
+                  See How It Works
+                </a>
+                <a
+                  href="#data"
+                  className="bg-white text-[#0F1729] px-7 py-3.5 rounded-xl text-sm font-semibold border border-[#E8DFD1] hover:border-[#0F1729]/20 hover:bg-[#F5F0E8] transition-all duration-300"
+                >
+                  Explore the Data
+                </a>
+              </motion.div>
+
+              <motion.div
+                className="flex items-center gap-2 mt-14 opacity-40 float-down"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.4 }}
+                transition={{ delay: 1.2 }}
+              >
+                <svg
+                  viewBox="0 0 16 24"
+                  className="w-4 h-6"
+                  fill="none"
+                  stroke="#0F1729"
+                  strokeWidth="1.5"
+                >
+                  <rect x="3" y="2" width="10" height="18" rx="5" />
+                  <circle cx="8" cy="7" r="1.5" fill="#0F1729" />
+                </svg>
+                <span className="text-xs text-[#6B7280]">Scroll to explore</span>
+              </motion.div>
             </div>
 
-            <div className="inline-flex items-center gap-2 border border-[#C8D3E8] px-3 py-1 mb-6">
-              <span className="text-[9px] font-mono tracking-[0.2em] text-[#6B7A99] uppercase">ML · Computer Vision · Pose Estimation</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.0] tracking-tight mb-5 fade-up fade-up-1">
-              SAFER<br /><span className="text-[#2563EB]">REPS,</span><br />SMARTER<br />FORM.
-            </h1>
-
-            <p className="text-sm text-[#6B7A99] leading-relaxed mb-8 max-w-xs fade-up fade-up-2">
-              Real-time posture evaluation from any camera. No coach. No motion capture. Just ML.
-            </p>
-
-            <div className="flex gap-1 mb-8 opacity-30">
-              {Array.from({ length: 32 }).map((_, i) => (
-                <div key={i} className="w-0.5 h-0.5 bg-[#0A1628] rounded-full" />
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-3 fade-up fade-up-3">
-              <a href="#solution" className="relative border border-[#0A1628] bg-[#0A1628] text-[#F8F9FB] px-6 py-2.5 text-[11px] font-mono tracking-[0.15em] uppercase hover:bg-[#2563EB] hover:border-[#2563EB] transition-colors group">
-                <span className="absolute -top-px -left-px w-2 h-2 border-t border-l border-[#F8F9FB] opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="absolute -bottom-px -right-px w-2 h-2 border-b border-r border-[#F8F9FB] opacity-0 group-hover:opacity-100 transition-opacity" />
-                Explore Pipeline
-              </a>
-              <a href="#data" className="border border-[#0A1628] bg-transparent px-6 py-2.5 text-[11px] font-mono tracking-[0.15em] uppercase hover:bg-[#EDF0F7] transition-colors">
-                View Data
-              </a>
-            </div>
-
-            <div className="flex items-center gap-2 mt-10 opacity-40 fade-up fade-up-4">
-              <svg viewBox="0 0 16 24" className="w-3 h-5 bounce-y" fill="none" stroke="#0A1628" strokeWidth="1.5">
-                <rect x="2" y="2" width="12" height="20" rx="6"/><circle cx="8" cy="7" r="1.5" fill="#0A1628"/>
+            <motion.div
+              className="relative min-h-[420px] lg:min-h-[480px] bg-gradient-to-br from-[#FEF0E0]/50 to-[#FFFBF5] rounded-3xl border border-[#E8DFD1]/60 overflow-hidden"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.9, delay: 0.3 }}
+            >
+              {/* Grid background */}
+              <svg
+                className="absolute inset-0 w-full h-full opacity-[0.05]"
+                preserveAspectRatio="xMidYMid slice"
+              >
+                <defs>
+                  <pattern
+                    id="hero-grid"
+                    width="24"
+                    height="24"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M 24 0 L 0 0 0 24"
+                      fill="none"
+                      stroke="#0F1729"
+                      strokeWidth="0.5"
+                    />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#hero-grid)" />
               </svg>
-              <span className="text-[9px] font-mono tracking-[0.2em] uppercase">Scroll</span>
-            </div>
-          </motion.div>
-        </div>
 
-        <motion.div className="relative min-h-[480px] lg:min-h-0 bg-[#F0F4FA]"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
-          <SkeletonHero />
-        </motion.div>
+              <SkeletonHero />
+
+              {/* Status badges */}
+              <motion.div
+                className="absolute top-5 left-6 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-[#E8DFD1]/60"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.5 }}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full" />
+                  <span className="text-[10px] font-medium text-[#6B7280]">
+                    Pose Active
+                  </span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="absolute top-5 right-6 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1.5 border border-[#E8DFD1]/60 text-right"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.6 }}
+              >
+                <div className="text-[10px] text-[#6B7280]">Confidence</div>
+                <div className="text-lg font-display font-bold text-[#0F1729] leading-tight">
+                  97.4%
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-[#0F1729] text-white rounded-full px-5 py-2 flex items-center gap-2"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.8 }}
+              >
+                <svg
+                  viewBox="0 0 8 8"
+                  className="w-2 h-2 fill-current text-green-400"
+                >
+                  <circle cx="4" cy="4" r="4" />
+                </svg>
+                <span className="text-xs font-semibold tracking-wide">
+                  Posture: Safe
+                </span>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
-      {/* STATS */}
-      <section className="border-y border-[#C8D3E8] bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 py-10">
-          <div className="mb-6 opacity-40"><Waveform /></div>
-          <div className="grid sm:grid-cols-4 divide-x divide-[#C8D3E8]">
+      {/* ─── STATS BAR ─── */}
+      <section className="bg-white border-y border-[#E8DFD1]/60">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { val: "4,979", label: "Total annotated reps" },
-              { val: "222", label: "Features extracted per frame" },
-              { val: "33", label: "MediaPipe landmarks tracked" },
-              { val: "147k", label: "Model parameters (TCN)" },
+              {
+                val: "650k+",
+                label: "Live feedbacks & annotations",
+                accent: false,
+              },
+              {
+                val: "222",
+                label: "Features per frame",
+                accent: true,
+              },
+              {
+                val: "33",
+                label: "Body landmarks tracked",
+                accent: false,
+              },
+              {
+                val: "147k",
+                label: "Model parameters",
+                accent: false,
+              },
             ].map((s, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <div className="px-5 first:pl-0 last:pr-0 py-2">
-                  <p className="text-2xl font-bold tracking-tighter leading-none mb-1">{s.val}</p>
-                  <p className="text-[10px] text-[#6B7A99] leading-snug">{s.label}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PROBLEM */}
-      <section id="problem" className="max-w-7xl mx-auto px-6 lg:px-16 py-20">
-        <Reveal>
-          <SectionLabel label="002 — The Problem" />
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-3">
-            POOR FORM IS<br />INVISIBLE TO THE LIFTER.
-          </h2>
-          <p className="text-sm text-[#6B7A99] leading-relaxed max-w-sm mb-10">
-            Most injuries come from form errors the athlete can&apos;t see. Existing solutions need a coach or expensive hardware.
-          </p>
-        </Reveal>
-
-        <div className="grid sm:grid-cols-3 gap-px bg-[#C8D3E8]">
-          {[
-            { icon: IconTarget, title: "Joint Angles", desc: "Knee valgus, elbow flare — small errors that compound." },
-            { icon: IconWarning, title: "Spinal Load", desc: "Lumbar rounding under heavy barbell creates shear forces." },
-            { icon: IconActivity, title: "Asymmetry", desc: "Left-right imbalances lead to chronic overuse injuries." },
-          ].map((card, i) => (
-            <Reveal key={i} delay={i * 0.1}>
-              <div className="bg-white p-5 group hover:bg-[#EDF0F7] transition-colors h-full">
-                <div className="w-8 h-8 border border-[#C8D3E8] flex items-center justify-center mb-4 group-hover:border-[#0A1628] transition-colors">
-                  <card.icon className="w-4 h-4 text-[#6B7A99] group-hover:text-[#0A1628] transition-colors" />
-                </div>
-                <h3 className="text-xs font-bold tracking-wide mb-1">{card.title}</h3>
-                <p className="text-[11px] text-[#6B7A99] leading-relaxed">{card.desc}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* SOLUTION */}
-      <section id="solution" className="border-t border-[#C8D3E8] bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 py-20 grid lg:grid-cols-2 gap-14 items-start">
-          <div>
-            <Reveal>
-              <SectionLabel label="003 — Pipeline" />
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-3">
-                FOUR STAGES.<br />ONE CAMERA.
-              </h2>
-              <p className="text-sm text-[#6B7A99] leading-relaxed mb-8 max-w-xs">
-                Same angle, different exercise, different verdict. That&apos;s why rules fail and ML wins.
-              </p>
-            </Reveal>
-
-            {[
-              { num: "01", icon: IconCamera, title: "Video Input", sub: "Standard camera — no specialist hardware.", active: false },
-              { num: "02", icon: IconNodes, title: "Pose Estimation", sub: "33 landmarks via MediaPipe, hip-centred, shoulder-scaled.", active: true },
-              { num: "03", icon: IconClassify, title: "Exercise Classification", sub: "Multi-class classifier from 222-dim feature vectors.", active: true },
-              { num: "04", icon: IconCheck, title: "Posture Verdict", sub: "Safe/Unsafe + specific error flags returned in real time.", active: false },
-            ].map((step, i) => (
               <Reveal key={i} delay={i * 0.08}>
-                <div className="flex gap-4 items-start py-3.5 border-b border-[#EDF0F7] last:border-0">
-                  <PipelineIcon icon={step.icon} active={step.active} />
-                  <div className="flex-1 pt-0.5">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-[9px] font-mono text-[#6B7A99] tracking-[0.2em]">STEP {step.num}</span>
-                      {step.active && <span className="text-[8px] font-mono bg-[#0A1628] text-[#F8F9FB] px-1.5 py-0.5 tracking-widest">ML</span>}
-                    </div>
-                    <h4 className="text-sm font-bold tracking-wide">{step.title}</h4>
-                    <p className="text-[11px] text-[#6B7A99] mt-0.5">{step.sub}</p>
+                <div className="text-center md:text-left">
+                  <p
+                    className={`font-display text-3xl font-bold tracking-tight leading-none mb-1 ${
+                      s.accent ? "text-[#E8613C]" : "text-[#0F1729]"
+                    }`}
+                  >
+                    {s.val}
+                  </p>
+                  <p className="text-sm text-[#6B7280]">{s.label}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── PROBLEM ─── */}
+      <section id="problem" className="bg-[#FFFBF5]">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-24">
+          <Reveal>
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <span className="inline-block text-xs font-semibold text-[#E8613C] uppercase tracking-wider mb-4">
+                The Problem
+              </span>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-5">
+                The Problem{" "}
+                <span className="text-[#E8613C]">Nobody Sees</span>
+              </h2>
+              <p className="text-lg text-[#4B5563] leading-relaxed">
+                Poor exercise form is a leading cause of gym injuries. Most
+                athletes can&apos;t see their own mistakes &mdash; they only
+                realize something is wrong after the pain starts.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid sm:grid-cols-3 gap-5">
+            {[
+              {
+                icon: (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <circle cx="12" cy="12" r="6" />
+                    <circle cx="12" cy="12" r="2" />
+                  </svg>
+                ),
+                title: "Incorrect Joint Angles",
+                desc: "Knee valgus, elbow flare, shoulder impingement — small angular errors that compound into serious injuries over time.",
+              },
+              {
+                icon: (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                ),
+                title: "Poor Spinal Alignment",
+                desc: "Lumbar rounding under heavy load creates dangerous shear forces on the spine. A problem invisible to the lifter themselves.",
+              },
+              {
+                icon: (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                  </svg>
+                ),
+                title: "Asymmetric Movement",
+                desc: "Left-right imbalances and uneven loading patterns lead to chronic overuse injuries that develop gradually.",
+              },
+            ].map((card, i) => (
+              <Reveal key={i} delay={i * 0.1}>
+                <div className="bg-white rounded-2xl p-7 border border-[#E8DFD1]/60 card-lift h-full">
+                  <div className="w-12 h-12 bg-[#FEF0E0] rounded-xl flex items-center justify-center mb-5 text-[#E8613C]">
+                    {card.icon}
                   </div>
+                  <h3 className="font-display text-lg font-bold mb-2 tracking-tight">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm text-[#6B7280] leading-relaxed">
+                    {card.desc}
+                  </p>
                 </div>
               </Reveal>
             ))}
           </div>
 
-          <div className="space-y-6 lg:sticky lg:top-16">
-            <Reveal delay={0.1}>
-              <div className="relative border border-[#C8D3E8] bg-white p-6">
-                <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-[#0A1628]" />
-                <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-[#0A1628]" />
-                <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-[#0A1628]" />
-                <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-[#0A1628]" />
+          <Reveal delay={0.3}>
+            <div className="mt-10 bg-[#0F1729] rounded-2xl p-8 text-center navy-gradient">
+              <p className="text-[#9CA3AF] text-sm mb-2">
+                Current solutions require
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 text-white font-display font-semibold">
+                <span className="bg-white/10 rounded-full px-5 py-2 text-sm">
+                  A human coach
+                </span>
+                <span className="text-[#6B7280] self-center">or</span>
+                <span className="bg-white/10 rounded-full px-5 py-2 text-sm">
+                  Expensive motion capture
+                </span>
+              </div>
+              <p className="text-[#9CA3AF] text-sm mt-4">
+                We need something <span className="text-[#E8613C] font-semibold">accessible</span>, <span className="text-[#E8613C] font-semibold">automatic</span>, and <span className="text-[#E8613C] font-semibold">affordable</span>.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
-                <p className="text-[9px] font-mono tracking-[0.2em] text-[#6B7A99] uppercase mb-4">Feature Engineering</p>
-                <h3 className="text-lg font-bold tracking-tight mb-5 leading-snug">222 features per frame.</h3>
+      {/* ─── WHY ML ─── */}
+      <section id="why-ml" className="bg-white">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-24">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <Reveal>
+              <div>
+                <span className="inline-block text-xs font-semibold text-[#E8613C] uppercase tracking-wider mb-4">
+                  Why Machine Learning
+                </span>
+                <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-6">
+                  Rules Can&apos;t<br />Keep Up
+                </h2>
+                <p className="text-lg text-[#4B5563] leading-relaxed mb-8">
+                  The same joint angle can mean &ldquo;perfect form&rdquo; in one exercise
+                  and &ldquo;injury risk&rdquo; in another. Fixed rules break down when the
+                  real world is this complex.
+                </p>
 
-                <div className="space-y-0 divide-y divide-[#EDF0F7]">
+                <div className="space-y-5">
                   {[
-                    { val: "99", label: "33 landmarks × 3 coords (x, y, z)" },
-                    { val: "12", label: "Joint angles via law of cosines" },
-                    { val: "111", label: "First-order velocity features" },
-                  ].map((row, i) => (
-                    <div key={i} className="py-3 flex items-center gap-4">
-                      <span className="text-xl font-bold text-[#2563EB] w-10 text-right flex-shrink-0">{row.val}</span>
-                      <p className="text-[11px] text-[#6B7A99]">{row.label}</p>
+                    {
+                      title: "Context-Dependent",
+                      desc: "Same knee angle is correct for squats but dangerous for lunges. ML learns the context.",
+                    },
+                    {
+                      title: "High Variability",
+                      desc: "Different body types, camera angles, and movement speeds make hard-coded rules impractical.",
+                    },
+                    {
+                      title: "Pattern Recognition",
+                      desc: "ML learns from massive datasets (like Qualcomm Exercise Video Dataset) and generalizes across users and environments.",
+                    },
+                  ].map((item, i) => (
+                    <div key={i} className="flex gap-4">
+                      <div className="flex-shrink-0 w-8 h-8 bg-[#FEF0E0] rounded-lg flex items-center justify-center mt-0.5">
+                        <span className="text-xs font-display font-bold text-[#E8613C]">
+                          {i + 1}
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="font-display font-bold text-[#0F1729] mb-1">
+                          {item.title}
+                        </h4>
+                        <p className="text-sm text-[#6B7280] leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
+              </div>
+            </Reveal>
 
-                <div className="mt-4 border-t border-[#C8D3E8] pt-3 bg-[#EDF0F7] -mx-6 -mb-6 px-6 pb-6">
-                  <p className="text-[11px] text-[#0A1628] font-bold">
-                    Hip-centred + shoulder-scaled normalization achieves 88% reduction in intra-subject variance.
-                  </p>
+            <Reveal delay={0.15}>
+              <div className="relative bg-[#FFFBF5] rounded-2xl p-8 border border-[#E8DFD1]/60">
+                <div className="space-y-6">
+                  <div className="bg-white rounded-xl p-5 border border-[#E8DFD1]/60">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center">
+                        <svg viewBox="0 0 16 16" className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <line x1="4" y1="4" x2="12" y2="12" /><line x1="12" y1="4" x2="4" y2="12" />
+                        </svg>
+                      </div>
+                      <span className="font-display font-bold text-sm text-[#0F1729]">Rule-Based Approach</span>
+                    </div>
+                    <p className="text-sm text-[#6B7280] leading-relaxed">
+                      &ldquo;If knee angle &lt; 90&deg;, flag as unsafe&rdquo;
+                    </p>
+                    <p className="text-xs text-red-400 mt-2 font-medium">
+                      Breaks with different exercises, body types, camera angles
+                    </p>
+                  </div>
+
+                  <div className="bg-white rounded-xl p-5 border border-[#E8DFD1]/60 glow-coral-sm">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 bg-[#FEF0E0] rounded-lg flex items-center justify-center">
+                        <svg viewBox="0 0 16 16" className="w-4 h-4 text-[#E8613C]" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <polyline points="3 8 7 12 13 4" />
+                        </svg>
+                      </div>
+                      <span className="font-display font-bold text-sm text-[#0F1729]">ML Approach</span>
+                    </div>
+                    <p className="text-sm text-[#6B7280] leading-relaxed">
+                      Learns from over 650,000 live feedbacks across multiple exercise datasets
+                    </p>
+                    <p className="text-xs text-[#E8613C] mt-2 font-medium">
+                      Generalizes to new users, angles, and speeds automatically
+                    </p>
+                  </div>
                 </div>
               </div>
             </Reveal>
@@ -493,110 +780,389 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* DATA — Exercise Showcase */}
-      <section id="data" className="border-t border-[#C8D3E8]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 py-20">
+      {/* ─── PIPELINE ─── */}
+      <section id="pipeline" className="bg-[#FFFBF5]">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-24">
           <Reveal>
-            <SectionLabel label="004 — Fitness-AQA Dataset" />
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-3">
-              THREE EXERCISES.<br />4,979 REPS.
-            </h2>
-            <p className="text-sm text-[#6B7A99] leading-relaxed max-w-sm mb-10">
-              Each rep is a single video clip with temporal and binary error annotations. Zero subject overlap between splits.
-            </p>
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <span className="inline-block text-xs font-semibold text-[#E8613C] uppercase tracking-wider mb-4">
+                How It Works
+              </span>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-5">
+                Four Simple Steps
+              </h2>
+              <p className="text-lg text-[#4B5563] leading-relaxed">
+                From a standard camera feed to actionable posture feedback in
+                real time. No special hardware needed.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              {
+                num: "01",
+                title: "Record",
+                desc: "Point any standard camera at yourself while exercising. Phone, webcam, or gym camera all work.",
+                color: "bg-[#FEF0E0]",
+                textColor: "text-[#E8613C]",
+                icon: (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                    <circle cx="12" cy="13" r="4" />
+                  </svg>
+                ),
+              },
+              {
+                num: "02",
+                title: "Detect",
+                desc: "MediaPipe identifies 33 body landmarks in real-time, creating a full skeleton model of your pose.",
+                color: "bg-[#0F1729]",
+                textColor: "text-white",
+                icon: (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="5" r="2" />
+                    <circle cx="5" cy="19" r="2" />
+                    <circle cx="19" cy="19" r="2" />
+                    <line x1="12" y1="7" x2="5" y2="17" />
+                    <line x1="12" y1="7" x2="19" y2="17" />
+                  </svg>
+                ),
+              },
+              {
+                num: "03",
+                title: "Analyze",
+                desc: "Our TCN model processes 222 features per frame — joint positions, angles, and velocities — to classify your exercise and evaluate form.",
+                color: "bg-[#0F1729]",
+                textColor: "text-white",
+                icon: (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                  </svg>
+                ),
+              },
+              {
+                num: "04",
+                title: "Feedback",
+                desc: 'Get an instant safe/unsafe verdict with specific error flags like "knees collapsing inward" or "elbows flaring".',
+                color: "bg-[#FEF0E0]",
+                textColor: "text-[#E8613C]",
+                icon: (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                ),
+              },
+            ].map((step, i) => (
+              <Reveal key={i} delay={i * 0.1}>
+                <div
+                  className={`rounded-2xl p-7 h-full card-lift ${
+                    step.color === "bg-[#0F1729]"
+                      ? "bg-[#0F1729] text-white navy-gradient"
+                      : "bg-white border border-[#E8DFD1]/60"
+                  }`}
+                >
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${
+                      step.color === "bg-[#0F1729]"
+                        ? "bg-white/10 text-white"
+                        : "bg-[#FEF0E0] text-[#E8613C]"
+                    }`}
+                  >
+                    {step.icon}
+                  </div>
+                  <div
+                    className={`text-xs font-bold mb-2 ${
+                      step.color === "bg-[#0F1729]"
+                        ? "text-[#E8613C]"
+                        : "text-[#E8613C]"
+                    }`}
+                  >
+                    Step {step.num}
+                  </div>
+                  <h3
+                    className={`font-display text-xl font-bold mb-2 tracking-tight ${
+                      step.color === "bg-[#0F1729]"
+                        ? "text-white"
+                        : "text-[#0F1729]"
+                    }`}
+                  >
+                    {step.title}
+                  </h3>
+                  <p
+                    className={`text-sm leading-relaxed ${
+                      step.color === "bg-[#0F1729]"
+                        ? "text-[#9CA3AF]"
+                        : "text-[#6B7280]"
+                    }`}
+                  >
+                    {step.desc}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Feature engineering detail */}
+          <Reveal delay={0.3}>
+            <div className="mt-10 bg-white rounded-2xl border border-[#E8DFD1]/60 p-8 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+              <div>
+                <h3 className="font-display text-xl font-bold tracking-tight mb-2">
+                  222 features per frame
+                </h3>
+                <p className="text-sm text-[#6B7280] leading-relaxed mb-5">
+                  Each video frame is transformed into a rich feature vector
+                  combining spatial positions, joint mechanics, and movement
+                  dynamics.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {[
+                    { val: "99", label: "Landmark coordinates (33 x 3)" },
+                    { val: "12", label: "Joint angles via law of cosines" },
+                    {
+                      val: "111",
+                      label: "Velocity features (first-order)",
+                    },
+                  ].map((f, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#FFFBF5] rounded-xl px-4 py-3 flex items-center gap-3"
+                    >
+                      <span className="font-display text-xl font-bold text-[#E8613C]">
+                        {f.val}
+                      </span>
+                      <span className="text-xs text-[#6B7280]">
+                        {f.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="bg-[#FEF0E0] rounded-xl px-6 py-4 text-center">
+                <p className="font-display text-4xl font-bold text-[#E8613C]">
+                  88%
+                </p>
+                <p className="text-xs text-[#6B7280] mt-1 max-w-[140px]">
+                  Reduction in variance via hip-centred normalization
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ─── DATA ─── */}
+      <section id="data" className="bg-white">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-24">
+          <Reveal>
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="inline-block text-xs font-semibold text-[#E8613C] uppercase tracking-wider mb-4">
+                The Datasets
+              </span>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-5">
+                Trained on{" "}
+                <span className="text-[#E8613C]">Real Data</span>
+              </h2>
+              <p className="text-lg text-[#4B5563] leading-relaxed">
+                The Qualcomm Exercise Video Dataset (QEVD) and Fitness-AQA provide over 650k+ live feedbacks
+                and 4,979 annotated repetitions across compound exercises, with temporal error annotations
+                and subject-level splits to guarantee robust modeling.
+              </p>
+            </div>
           </Reveal>
 
           <Reveal delay={0.1}>
             <ExerciseShowcase />
           </Reveal>
 
-          {/* Frameworks */}
+          {/* Tech stack */}
           <Reveal delay={0.2}>
-            <div className="bg-white border border-[#C8D3E8] border-t-0 p-5 flex flex-wrap items-center gap-3">
-              <span className="text-[9px] font-mono tracking-[0.2em] text-[#6B7A99] uppercase mr-2">Stack:</span>
-              {["MediaPipe", "PyTorch", "TCN", "AdamW", "Huber Loss", "BCE + pos_weight"].map((f) => (
-                <span key={f} className="border border-[#C8D3E8] bg-[#EDF0F7] px-3 py-1 text-[10px] font-mono tracking-wide hover:border-[#0A1628] transition-colors cursor-default">{f}</span>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ARCHITECTURE */}
-      <section id="architecture" className="border-t border-[#C8D3E8] bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 py-20 grid lg:grid-cols-2 gap-14 items-start">
-          <div>
-            <Reveal>
-              <SectionLabel label="005 — Architecture" />
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-3">
-                TCN WITH<br />DUAL-TASK HEADS.
-              </h2>
-              <p className="text-sm text-[#6B7A99] leading-relaxed max-w-xs mb-8">
-                Parallelizable, causal, and captures full-rep context through exponentially dilated convolutions.
-              </p>
-            </Reveal>
-
-            <div className="space-y-0 divide-y divide-[#EDF0F7]">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <span className="text-xs text-[#6B7280] font-medium mr-2">
+                Built with:
+              </span>
               {[
-                { label: "Why TCN over LSTM?", detail: "All timesteps processed simultaneously — faster GPU training." },
-                { label: "Dilation strategy", detail: "d = 1, 2, 4, 8, 16, 32 — block 6 sees all 100 frames." },
-                { label: "Regression head", detail: "Huber Loss (δ=0.1) — robust to mislabeled reps." },
-                { label: "Classification head", detail: "BCE with pos_weight up to 12× for rare errors." },
-                { label: "Regularization", detail: "Dropout 0.2, weight decay 1e-4, gradient clipping at 1.0." },
-              ].map((row, i) => (
-                <Reveal key={i} delay={i * 0.06}>
-                  <div className="py-3 flex items-start gap-3">
-                    <div className="w-1 h-1 bg-[#2563EB] mt-2 flex-shrink-0" />
-                    <div>
-                      <p className="text-xs font-bold tracking-wide">{row.label}</p>
-                      <p className="text-[11px] text-[#6B7A99] mt-0.5">{row.detail}</p>
-                    </div>
-                  </div>
-                </Reveal>
+                "MediaPipe",
+                "PyTorch",
+                "TCN",
+                "AdamW",
+                "Huber Loss",
+                "BCE + pos_weight",
+              ].map((f) => (
+                <span
+                  key={f}
+                  className="bg-[#FFFBF5] border border-[#E8DFD1] px-4 py-1.5 rounded-full text-xs font-medium text-[#4B5563] hover:border-[#E8613C]/30 hover:bg-[#FEF0E0]/50 transition-all duration-300 cursor-default"
+                >
+                  {f}
+                </span>
               ))}
             </div>
-          </div>
-
-          <Reveal delay={0.15} className="lg:sticky lg:top-16">
-            <TCNDiagram />
           </Reveal>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="border-t border-[#C8D3E8] bg-[#F8F9FB]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-3">
-            <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none" stroke="#0A1628" strokeWidth="1.5">
-              <circle cx="8" cy="4" r="1.5"/><circle cx="3" cy="13" r="1.5"/><circle cx="13" cy="13" r="1.5"/>
-              <line x1="8" y1="5.5" x2="3" y2="11.5"/><line x1="8" y1="5.5" x2="13" y2="11.5"/>
-            </svg>
-            <span className="text-[10px] font-mono text-[#6B7A99] tracking-widest">EXERCISE ADVISOR · 2026</span>
-          </div>
-          <div className="flex gap-6 text-[9px] font-mono tracking-[0.2em] text-[#6B7A99] uppercase">
-            <a href="#" className="hover:text-[#0A1628] transition-colors">Slides</a>
-            <a href="#" className="hover:text-[#0A1628] transition-colors">Dataset</a>
-            <a href="#" className="hover:text-[#0A1628] transition-colors">GitHub</a>
-          </div>
-        </div>
-        <div className="border-t border-[#C8D3E8] bg-white">
-          <div className="max-w-7xl mx-auto px-6 lg:px-16 py-2 flex items-center justify-between">
-            <div className="flex items-center gap-4 text-[8px] font-mono text-[#6B7A99] tracking-[0.15em]">
-              <span className="hidden sm:inline">SYSTEM.ACTIVE</span>
-              <div className="flex gap-0.5 items-end h-3">
-                {[4,7,5,9,6,11,4,8,5,10,7,9].map((h, i) => (
-                  <div key={i} className="w-1 bg-[#C8D3E8]" style={{ height: `${h}px` }} />
+      {/* ─── ARCHITECTURE ─── */}
+      <section id="architecture" className="bg-[#FFFBF5]">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-24">
+          <div className="grid lg:grid-cols-2 gap-14 items-start">
+            <div>
+              <Reveal>
+                <span className="inline-block text-xs font-semibold text-[#E8613C] uppercase tracking-wider mb-4">
+                  Architecture
+                </span>
+                <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-5">
+                  Under the Hood
+                </h2>
+                <p className="text-lg text-[#4B5563] leading-relaxed mb-10">
+                  A Temporal Convolutional Network with dual-task heads —
+                  lightweight enough for real-time deployment, powerful enough to
+                  catch subtle form errors.
+                </p>
+              </Reveal>
+
+              <div className="space-y-4">
+                {[
+                  {
+                    label: "Why TCN over LSTM?",
+                    detail:
+                      "All timesteps processed simultaneously — parallelizable on GPU, no sequential bottleneck.",
+                  },
+                  {
+                    label: "Exponential Dilation",
+                    detail:
+                      "Dilations of 1, 2, 4, 8, 16, 32 — the final block sees the entire 100-frame sequence.",
+                  },
+                  {
+                    label: "Dual Output Heads",
+                    detail:
+                      "Quality score regression via Huber Loss + error classification via BCE with pos_weight up to 12x for rare errors.",
+                  },
+                  {
+                    label: "Lightweight Model",
+                    detail:
+                      "Only ~147k parameters. Small enough for mobile deployment, large enough to capture complex biomechanics.",
+                  },
+                  {
+                    label: "Regularization Stack",
+                    detail:
+                      "Dropout 0.2, weight decay 1e-4, gradient clipping at 1.0, early stopping with patience of 10 epochs.",
+                  },
+                ].map((row, i) => (
+                  <Reveal key={i} delay={i * 0.06}>
+                    <div className="bg-white rounded-xl p-5 border border-[#E8DFD1]/60">
+                      <h4 className="font-display font-bold text-sm text-[#0F1729] mb-1">
+                        {row.label}
+                      </h4>
+                      <p className="text-sm text-[#6B7280] leading-relaxed">
+                        {row.detail}
+                      </p>
+                    </div>
+                  </Reveal>
                 ))}
               </div>
-              <span>V1.0.0</span>
             </div>
-            <div className="flex items-center gap-2 text-[8px] font-mono text-[#6B7A99] tracking-[0.15em]">
-              <span className="hidden sm:inline">◐ RENDERING</span>
-              <div className="flex gap-0.5">
-                <div className="w-1 h-1 bg-[#0A1628] rounded-full pulse-dot" />
-                <div className="w-1 h-1 bg-[#0A1628] rounded-full pulse-dot-2" />
-                <div className="w-1 h-1 bg-[#0A1628] rounded-full pulse-dot-3" />
+
+            <Reveal delay={0.15} className="lg:sticky lg:top-24">
+              <TCNDiagram />
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FOOTER ─── */}
+      <footer className="bg-[#0F1729] navy-gradient text-white">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16">
+          <div className="grid md:grid-cols-[1fr_auto] gap-10 items-center">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 bg-white/10 rounded-xl flex items-center justify-center">
+                  <svg
+                    viewBox="0 0 20 20"
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="#FFFBF5"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  >
+                    <circle cx="10" cy="5" r="2.5" />
+                    <line x1="10" y1="7.5" x2="10" y2="13" />
+                    <line x1="10" y1="9" x2="5" y2="13" />
+                    <line x1="10" y1="9" x2="15" y2="13" />
+                    <line x1="10" y1="13" x2="6" y2="18" />
+                    <line x1="10" y1="13" x2="14" y2="18" />
+                  </svg>
+                </div>
+                <span className="font-display text-lg font-bold">
+                  FormCoach
+                </span>
               </div>
+              <p className="text-sm text-[#9CA3AF] max-w-md leading-relaxed">
+                An ML-powered exercise form advisor built by Group 6 at Imperial
+                College London. Automatically detects unsafe posture using only a
+                standard camera.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-end gap-3">
+              <div className="flex gap-4 text-sm text-[#9CA3AF]">
+                <a
+                  href="#"
+                  className="hover:text-white transition-colors"
+                >
+                  Slides
+                </a>
+                <a
+                  href="#"
+                  className="hover:text-white transition-colors"
+                >
+                  Dataset
+                </a>
+                <a
+                  href="#"
+                  className="hover:text-white transition-colors"
+                >
+                  GitHub
+                </a>
+              </div>
+              <p className="text-xs text-[#6B7280]">
+                Demystifying Machine Learning &middot; 2026
+              </p>
             </div>
           </div>
         </div>
