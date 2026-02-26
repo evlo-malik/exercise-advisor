@@ -1,26 +1,135 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-space-mono);
+  --font-mono: var(--font-space-mono);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0px;
+  --background: #F8F9FB;
+  --foreground: #0A1628;
+  --card: #FFFFFF;
+  --card-foreground: #0A1628;
+  --primary: #0A1628;
+  --primary-foreground: #F8F9FB;
+  --secondary: #EDF0F7;
+  --secondary-foreground: #0A1628;
+  --muted: #EDF0F7;
+  --muted-foreground: #6B7A99;
+  --accent: #2563EB;
+  --accent-foreground: #FFFFFF;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #C8D3E8;
+  --input: #C8D3E8;
+  --ring: #2563EB;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-space-mono), monospace;
+    background-color: #F8F9FB;
+    color: #0A1628;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Scanline texture overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(10, 22, 40, 0.015) 2px,
+    rgba(10, 22, 40, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
 }
+
+/* ── Stroke-draw animation ── */
+@keyframes stroke-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.svg-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  pathLength: 1;
+}
+
+/* ── Blink cursor ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* ── Fade up ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fade-up 0.6s ease-out both; }
+.fade-up-1 { animation-delay: 0.1s; }
+.fade-up-2 { animation-delay: 0.22s; }
+.fade-up-3 { animation-delay: 0.36s; }
+.fade-up-4 { animation-delay: 0.52s; }
+
+/* ── Dither bar ── */
+.dither {
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(10,22,40,0.4) 1px, rgba(10,22,40,0.4) 2px),
+    repeating-linear-gradient(90deg, transparent 0px, transparent 1px, rgba(10,22,40,0.4) 1px, rgba(10,22,40,0.4) 2px);
+  background-size: 3px 3px;
+}
+
+/* ── Pulse dot ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+.pulse-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
+.pulse-dot-2 { animation: pulse-dot 1.4s ease-in-out 0.2s infinite; }
+.pulse-dot-3 { animation: pulse-dot 1.4s ease-in-out 0.4s infinite; }
+
+/* ── Scroll indicator bounce ── */
+@keyframes bounce-y {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(5px); }
+}
+.bounce-y { animation: bounce-y 1.6s ease-in-out infinite; }
