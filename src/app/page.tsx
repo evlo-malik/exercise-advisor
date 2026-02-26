@@ -405,8 +405,8 @@ export default function LandingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               {
-                val: "650k+",
-                label: "Live feedbacks & annotations",
+                val: "4,979",
+                label: "Annotated repetitions",
                 accent: false,
               },
               {
@@ -584,7 +584,7 @@ export default function LandingPage() {
                     },
                     {
                       title: "Pattern Recognition",
-                      desc: "ML learns from massive datasets (like Qualcomm Exercise Video Dataset) and generalizes across users and environments.",
+                      desc: "ML learns from massive datasets (like Fitness-AQA) and generalizes across users and environments.",
                     },
                   ].map((item, i) => (
                     <div key={i} className="flex gap-4">
@@ -637,7 +637,7 @@ export default function LandingPage() {
                       <span className="font-display font-bold text-sm text-foreground">ML Approach</span>
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Learns from over 650,000 live feedbacks across multiple exercise datasets
+                      Learns from 4,979 annotated repetitions across the Fitness-AQA dataset
                     </p>
                     <p className="text-xs text-primary mt-2 font-medium">
                       Generalizes to new users, angles, and speeds automatically
@@ -799,8 +799,7 @@ export default function LandingPage() {
                 Trained on <span className="text-muted-foreground">Real Data</span>
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                The Qualcomm Exercise Video Dataset (QEVD) and Fitness-AQA provide over 650k+ live feedbacks
-                and 4,979 annotated repetitions across compound exercises, with temporal error annotations
+                The Fitness-AQA dataset provides 4,979 annotated repetitions across compound exercises, with temporal error annotations
                 and subject-level splits to guarantee robust modeling.
               </p>
             </div>
