@@ -32,7 +32,7 @@ def augment_landmarks(landmarks: np.ndarray, rng: np.random.Generator) -> np.nda
         aug = np.asarray(fn(dst_t), dtype=np.float32).reshape(new_len, 33, 3)
 
     if rng.random() < 0.5:
-        aug += rng.normal(0.0, 0.01, aug.shape).astype(np.float32)
+        aug += np.asarray(rng.normal(0.0, 0.01, size=aug.shape), dtype=np.float32)
 
     if rng.random() < 0.5:
         aug[:, :, 0] *= -1
