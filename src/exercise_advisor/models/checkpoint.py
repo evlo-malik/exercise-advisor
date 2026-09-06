@@ -57,7 +57,9 @@ def save_checkpoint(
 ) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    state = model.module.state_dict() if hasattr(model, "module") else model.state_dict()
+    if isinstance(model, (torch.nn.DataParallel, torch.nn.parallel.DistributedDataParallel)):
+        model = model.module
+    state = model.state_dict()
     payload: dict[str, Any] = {
         "format_version": CHECKPOINT_FORMAT_VERSION,
         "model_state": {k: v.detach().cpu() for k, v in state.items()},
