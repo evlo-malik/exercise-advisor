@@ -96,7 +96,7 @@ ignore = [
 quote-style = "double"
 
 [tool.mypy]
-python_version = "3.10"
+# No python_version pin: numpy stubs use 3.12 syntax, so mypy targets the running interpreter.
 packages = ["exercise_advisor"]
 mypy_path = "src"
 ignore_missing_imports = true
