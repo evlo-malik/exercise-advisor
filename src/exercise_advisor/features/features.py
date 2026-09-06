@@ -127,4 +127,4 @@ def interpolate_sequence(features: np.ndarray, target_len: int = 100) -> np.ndar
     src_t = np.linspace(0.0, 1.0, n_frames)
     dst_t = np.linspace(0.0, 1.0, target_len)
     fn = interp1d(src_t, feats, axis=0, kind="linear", fill_value="extrapolate")
-    return fn(dst_t).astype(np.float32)
+    return np.asarray(fn(dst_t), dtype=np.float32)

@@ -29,7 +29,7 @@ def augment_landmarks(landmarks: np.ndarray, rng: np.random.Generator) -> np.nda
         src_t = np.linspace(0.0, 1.0, n_frames)
         dst_t = np.linspace(0.0, 1.0, new_len)
         fn = interp1d(src_t, aug.reshape(n_frames, -1), axis=0, kind="linear")
-        aug = fn(dst_t).reshape(new_len, 33, 3).astype(np.float32)
+        aug = np.asarray(fn(dst_t), dtype=np.float32).reshape(new_len, 33, 3)
 
     if rng.random() < 0.5:
         aug += rng.normal(0.0, 0.01, aug.shape).astype(np.float32)
