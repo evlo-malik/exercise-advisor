@@ -219,8 +219,8 @@ export function HeroMonochromeLaunch() {
 
   useEffect(() => {
     if (!sectionRef.current || typeof window === "undefined") {
-      setVisible(true);
-      return;
+      const id = window.setTimeout(() => setVisible(true), 0);
+      return () => window.clearTimeout(id);
     }
 
     const node = sectionRef.current;
@@ -251,7 +251,7 @@ export function HeroMonochromeLaunch() {
     if (typeof window !== "undefined") {
       try {
         window.localStorage?.setItem("hero-theme", next);
-      } catch (_err) {
+      } catch {
         /* ignore */
       }
     }
@@ -373,6 +373,15 @@ export function HeroMonochromeLaunch() {
                 Explore Architecture
                 <span aria-hidden className="text-lg font-display">↗</span>
               </a>
+              <a
+                href="https://github.com/evlo-malik/exercise-advisor"
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm font-medium transition duration-500 ${palette.border} hover:translate-y-[-2px]`}
+              >
+                View on GitHub
+                <span aria-hidden className="text-lg font-display">↗</span>
+              </a>
             </div>
           </div>
 
@@ -422,7 +431,7 @@ export function HeroMonochromeLaunch() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {[
             { title: "222 Features/Frame", desc: "Normalized Joint Velocities" },
-            { title: "147k Parameters", desc: "Lightweight TCN Core" },
+            { title: "648k Parameters", desc: "Lightweight TCN Core" },
             { title: "Zero Data Leakage", desc: "Strict Subject Splits" }
           ].map((item, index) => (
             <div

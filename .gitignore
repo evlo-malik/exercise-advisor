@@ -1,41 +1,57 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ---- Data (never commit the Fitness-AQA release or extracted poses) ----
+# Anchored to the repo root so src/exercise_advisor/data/ is NOT ignored.
+/data/
+/Fitness-AQA_dataset_release/
+/poses/
+/processed/
+/outputs/
+*.mp4
+*.jpg
+*.jpeg
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+env/
+build/
+dist/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.ipynb_checkpoints/
 
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# ---- Node / Next.js (web/) ----
+web/node_modules/
+web/.next/
+web/out/
+web/next-env.d.ts
+web/*.tsbuildinfo
+web/.vercel/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# ---- Environment / secrets ----
+.env
+.env.*
+!.env.example
 
-# vercel
-.vercel
+# ---- Editors & OS ----
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# ---- Misc ----
+*.log
+*.tmp
+~/.cache/

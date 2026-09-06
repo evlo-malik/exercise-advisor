@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below, and cite the Fitness-AQA dataset paper."
+type: software
+title: "Exercise Advisor: pose-based action quality assessment for barbell exercises"
+authors:
+  - family-names: Evloev
+    given-names: Malik
+version: 1.0.0
+date-released: 2026-09-06
+license: MIT
+repository-code: "https://github.com/evlo-malik/exercise-advisor"
+url: "https://exercise-advisor-mu.vercel.app"
+keywords:
+  - action quality assessment
+  - pose estimation
+  - temporal convolutional network
+  - fitness
+references:
+  - type: article
+    title: "Domain Knowledge-Informed Self-Supervised Representations for Workout Form Assessment"
+    authors:
+      - family-names: Parmar
+        given-names: Paritosh
+      - family-names: Gharat
+        given-names: Amol
+      - family-names: Rhodin
+        given-names: Helge
+    journal: "arXiv preprint arXiv:2202.14019"
+    year: 2022

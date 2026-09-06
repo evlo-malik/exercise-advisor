@@ -310,7 +310,7 @@ const TCNDiagram = () => (
 
     <div className="grid grid-cols-3 gap-3">
       {[
-        { val: "147k", label: "Parameters" },
+        { val: "648k", label: "Parameters" },
         { val: "6", label: "TCN Blocks" },
         { val: "100+", label: "Receptive Field" },
       ].map((s, i) => (
@@ -385,6 +385,14 @@ export default function LandingPage() {
             >
               Architecture
             </a>
+            <a
+              href="https://github.com/evlo-malik/exercise-advisor"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              GitHub
+            </a>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -420,7 +428,7 @@ export default function LandingPage() {
                 accent: false,
               },
               {
-                val: "147k",
+                val: "648k",
                 label: "Model parameters",
                 accent: false,
               },
@@ -715,8 +723,8 @@ export default function LandingPage() {
               },
               {
                 num: "04",
-                title: "Multi-Task Output",
-                desc: "Dual heads perform classification to predict specific form errors and regression to generate a composite score of exercise quality.",
+                title: "Per-Class Output",
+                desc: "Seven binary classifiers flag specific form errors. Their probabilities are combined into a composite quality score and mapped to coaching feedback.",
                 color: "bg-secondary",
                 textColor: "text-foreground",
                 icon: (
@@ -819,9 +827,9 @@ export default function LandingPage() {
                 "MediaPipe",
                 "PyTorch",
                 "TCN",
+                "AttentionPool",
                 "AdamW",
-                "Huber Loss",
-                "BCE + pos_weight",
+                "BCE",
               ].map((f) => (
                 <span
                   key={f}
@@ -848,9 +856,9 @@ export default function LandingPage() {
                   Under the Hood
                 </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-10">
-                  A Temporal Convolutional Network with dual-task heads —
-                  lightweight enough for real-time deployment, powerful enough to
-                  catch subtle form errors.
+                  A Temporal Convolutional Network with attention pooling and one
+                  binary head per error class — lightweight enough for real-time
+                  deployment, powerful enough to catch subtle form errors.
                 </p>
               </Reveal>
 
@@ -867,19 +875,19 @@ export default function LandingPage() {
                       "Dilations of 1, 2, 4, 8, 16, 32 — the final block sees the entire 100-frame sequence.",
                   },
                   {
-                    label: "Dual Output Heads",
+                    label: "One Classifier per Error",
                     detail:
-                      "Quality score regression via Huber Loss + error classification via BCE with pos_weight up to 12x for rare errors.",
+                      "Seven binary TCNs, each trained on a balanced 1:1 dataset with plain BCE. The quality score is derived as 1 − mean error probability, so no multi-task loss balancing is needed.",
                   },
                   {
                     label: "Lightweight Model",
                     detail:
-                      "Only ~147k parameters. Small enough for mobile deployment, large enough to capture complex biomechanics.",
+                      "About 648k parameters per error detector. Runs in real time on a laptop CPU, yet large enough to capture complex biomechanics.",
                   },
                   {
                     label: "Regularization Stack",
                     detail:
-                      "Dropout 0.2, weight decay 1e-4, gradient clipping at 1.0, early stopping with patience of 10 epochs.",
+                      "Dropout 0.3, weight decay 5e-4, gradient clipping at 1.0, early stopping with patience of 30 epochs, plus six landmark-space augmentations.",
                   },
                 ].map((row, i) => (
                   <Reveal key={i} delay={i * 0.06}>
@@ -987,7 +995,7 @@ export default function LandingPage() {
 
                 <div className="grid grid-cols-3 gap-3 pt-5 border-t border-border">
                   {[
-                    { val: "147k", label: "Parameters" },
+                    { val: "648k", label: "Parameters" },
                     { val: "6", label: "TCN Blocks" },
                     { val: "100+", label: "Receptive Field" },
                   ].map((s, i) => (
@@ -1033,6 +1041,14 @@ export default function LandingPage() {
             </div>
 
             <div className="flex flex-col items-end gap-3">
+              <a
+                href="https://github.com/evlo-malik/exercise-advisor"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-medium text-foreground hover:underline"
+              >
+                Source code &amp; models on GitHub &rarr;
+              </a>
               <p className="text-xs text-muted-foreground">
                 Demystifying Machine Learning &middot; 2026
               </p>
